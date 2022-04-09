@@ -7,6 +7,8 @@
 #include <QThread>
 
 namespace Constants {
+    const int GameObjectSize = 10;
+
     const float UpdateGameObjectsFrequency = 10;
 
     const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
@@ -196,14 +198,13 @@ QColor getTypeColor(GameObjectType type)
 
 GameObject::GameObject(QWidget *parent, GameObjectType goType, const int& xPos, const int& yPos) : QWidget(parent)
 {
-    setType(goType);
-    setGeometry(xPos, yPos, 10, 10);//Todo constify
+    reset(goType, xPos, yPos);
 }
 
 void GameObject::reset(GameObjectType goType, const int &xPos, const int &yPos)
 {
     setType(goType);
-    setGeometry(xPos, yPos, 10, 10);//Todo constify
+    setGeometry(xPos, yPos, Constants::GameObjectSize, Constants::GameObjectSize);
 }
 
 void GameObject::setType(GameObjectType type)
