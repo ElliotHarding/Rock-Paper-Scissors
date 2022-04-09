@@ -6,7 +6,7 @@
 #include <QRandomGenerator>
 
 namespace Constants {
-    const float UpdateGameObjectsFrequency = 100;
+    const float UpdateGameObjectsFrequency = 50;
 
     const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
         {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
