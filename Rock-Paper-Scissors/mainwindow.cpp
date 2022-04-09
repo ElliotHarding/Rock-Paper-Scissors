@@ -172,15 +172,11 @@ void MainWindow::onUpdateGameObjects()
     {
         //Todo update winner
 
-        repaint();
-
         m_pUpdateGameObjectsTimer->blockSignals(true);
         QThread::msleep(500);
         reset();
         m_pUpdateGameObjectsTimer->blockSignals(false);
     }
-
-    update();
 }
 
 QColor getTypeColor(GameObjectType type)
