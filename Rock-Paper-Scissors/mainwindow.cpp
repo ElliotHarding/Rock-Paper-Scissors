@@ -6,7 +6,7 @@
 #include <QRandomGenerator>
 
 namespace Constants {
-    const float UpdateGameObjectsFrequency = 1000;
+    const float UpdateGameObjectsFrequency = 200;
 
     const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
         {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
@@ -28,21 +28,34 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 25, 25));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 25, 5));
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 25));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 45, 5));
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 45));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 25, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 25, 25));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 25, 45));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 45, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 45, 25));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 45, 45));
 
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 105, 105));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 125, 125));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 105, 125));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 125, 105));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 195, 195));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 195, 175));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 195, 155));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 195));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 155));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 155, 195));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 155, 175));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 155, 155));
 
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 5, 105));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 5, 125));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 25, 105));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 25, 125));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 195, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 195, 25));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 195, 45));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 25));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 45));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 155, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 155, 25));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 155, 45));
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
@@ -66,26 +79,40 @@ void MainWindow::onUpdateGameObjects()
     //Update positions
     for(GameObject* go : m_gameObjects)
     {
-        int randomValue = QRandomGenerator::global()->generateDouble() * 4;
+        int randomValue = QRandomGenerator::global()->generateDouble() * 6;
         if(randomValue == 0)
         {
-            go->setGeometry(go->geometry().translated(1, 0));
+            if(go->geometry().right() < geometry().right())
+            {
+                go->setGeometry(go->geometry().translated(1, 0));
+            }
         }
         else if(randomValue == 1)
         {
-            go->setGeometry(go->geometry().translated(-1, 0));
+            if(go->geometry().left() > 0)
+            {
+                go->setGeometry(go->geometry().translated(-1, 0));
+            }
         }
         else if(randomValue == 2)
         {
-            go->setGeometry(go->geometry().translated(0, 1));
+            if(go->geometry().bottom() < geometry().bottom())
+            {
+                go->setGeometry(go->geometry().translated(0, 1));
+            }
         }
         else if(randomValue == 3)
         {
-            go->setGeometry(go->geometry().translated(0, -1));
+            if(go->geometry().top() > 0)
+            {
+                go->setGeometry(go->geometry().translated(0, -1));
+            }
         }
         else
         {
-            qDebug() << "MainWindow::onUpdateGameObjects - Invalid random number generated";
+            const int deltaX = geometry().center().x() - go->geometry().x();
+            const int deltaY = geometry().center().y() - go->geometry().y();
+            go->setGeometry(go->geometry().translated(deltaX > 0 ? 1 : -1, deltaY > 0 ? 1 : -1));
         }
     }
 
