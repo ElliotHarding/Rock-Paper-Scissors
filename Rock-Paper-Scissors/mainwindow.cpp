@@ -6,7 +6,7 @@
 #include <QRandomGenerator>
 
 namespace Constants {
-    const float UpdateGameObjectsFrequency = 1;
+    const float UpdateGameObjectsFrequency = 1000;
 
     const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
         {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
@@ -27,6 +27,23 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 25, 25));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 25, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 25));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 45, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 45));
+
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 105, 105));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 125, 125));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 105, 125));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 125, 105));
+
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 5, 105));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 5, 125));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 25, 105));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 25, 125));
+
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
     m_pUpdateGameObjectsTimer->start(Constants::UpdateGameObjectsFrequency);
@@ -34,6 +51,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    for(GameObject* go : m_gameObjects)
+    {
+        delete go;
+        go = nullptr;
+    }
+    m_gameObjects.clear();
+
     delete ui;
 }
 
@@ -92,10 +116,11 @@ QColor getTypeColor(GameObjectType type)
     }
 }
 
-GameObject::GameObject(QWidget *parent, GameObjectType goType) : QWidget(parent),
+GameObject::GameObject(QWidget *parent, GameObjectType goType, const int& xPos, const int& yPos) : QWidget(parent),
     m_type(goType)
 {
     m_color = getTypeColor(goType);
+    setGeometry(xPos, yPos, 10, 10);//Todo constify
 }
 
 void GameObject::setType(GameObjectType type)

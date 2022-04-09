@@ -20,7 +20,7 @@ class GameObject : public QWidget
     Q_OBJECT
 
 public:
-    GameObject(QWidget *parent, GameObjectType goType);
+    GameObject(QWidget *parent, GameObjectType goType, const int& xPos, const int& yPos);
 
     void setType(GameObjectType type);
     GameObjectType getType();
