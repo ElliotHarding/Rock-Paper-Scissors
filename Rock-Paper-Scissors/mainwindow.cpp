@@ -155,18 +155,20 @@ void MainWindow::onUpdateGameObjects()
         }
         else
         {
-            int xFromCenter = go->geometry().x() - geometry().center().x() + geometry().left();
-            int yFromCenter = go->geometry().y() - geometry().center().y() + geometry().top();
+            int xToCenter = geometry().center().x() - geometry().left() - go->geometry().x();
+            int yToCenter = geometry().center().y() - geometry().top() - go->geometry().y();
 
             //Move towards center, unless close to it, in which case move away from center
-            if(xFromCenter < Constants::MoveAwayFromCenterSize && xFromCenter > -Constants::MoveAwayFromCenterSize &&
-               yFromCenter < Constants::MoveAwayFromCenterSize && yFromCenter > -Constants::MoveAwayFromCenterSize)
+            if(xToCenter > Constants::MoveAwayFromCenterSize || xToCenter < -Constants::MoveAwayFromCenterSize ||
+               yToCenter > Constants::MoveAwayFromCenterSize || yToCenter < -Constants::MoveAwayFromCenterSize)
             {
-                xFromCenter *= -1;
-                yFromCenter *= -1;
+                go->setGeometry(go->geometry().translated(xToCenter > 0 ? 1 : -1, yToCenter > 0 ? 1 : -1));
+            }
+            else
+            {
+                go->setGeometry(go->geometry().translated(xToCenter > 0 ? -1 : 1, yToCenter > 0 ? -1 : 1));
             }
 
-            go->setGeometry(go->geometry().translated(xFromCenter > 0 ? -1 : 1, yFromCenter > 0 ? -1 : 1));
         }
     }
 
