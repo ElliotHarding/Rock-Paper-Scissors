@@ -165,7 +165,7 @@ void GameObject::checkCollided(GameObject *other)
 {
     if(geometry().intersects(other->geometry()))
     {
-        m_type = Constants::CollisionResults[QPair<GameObjectType, GameObjectType>(m_type, other->getType())];
+        setType(Constants::CollisionResults[QPair<GameObjectType, GameObjectType>(m_type, other->getType())]);
     }
 }
 
