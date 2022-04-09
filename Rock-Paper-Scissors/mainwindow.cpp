@@ -119,8 +119,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::onUpdateGameObjects()
 {
-
-
     //Update positions
     for(GameObject* go : m_gameObjects)
     {
