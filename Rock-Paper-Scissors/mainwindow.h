@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,7 +41,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void onUpdateGameObjects();
+
 private:
     Ui::MainWindow *ui;
+
+    QTimer* m_pUpdateGameObjectsTimer;
+
+    QList<GameObject*> m_gameObjects;
 };
 #endif // MAINWINDOW_H
