@@ -172,10 +172,6 @@ void MainWindow::onUpdateGameObjects()
     {
         //Todo update winner
 
-        for(GameObject* go : m_gameObjects)
-        {
-            go->update();
-        }
 
         m_pUpdateGameObjectsTimer->blockSignals(true);
         QThread::msleep(500);
@@ -217,6 +213,7 @@ void GameObject::setType(GameObjectType type)
 {
     m_type = type;
     m_color = getTypeColor(m_type);
+    update();
 }
 
 GameObjectType GameObject::getType()
