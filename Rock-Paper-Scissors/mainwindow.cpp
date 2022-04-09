@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
+#include <QPainter>
+#include <QRandomGenerator>
 
 namespace Constants {
     const float UpdateGameObjectsFrequency = 1;
@@ -40,7 +42,7 @@ void MainWindow::onUpdateGameObjects()
     //Update positions
     for(GameObject* go : m_gameObjects)
     {
-        int randomValue = qrand() % 4;
+        int randomValue = QRandomGenerator::global()->generateDouble() * 4;
         if(randomValue == 0)
         {
             go->setGeometry(go->geometry().translated(1, 0));
@@ -75,14 +77,31 @@ void MainWindow::onUpdateGameObjects()
     update();
 }
 
+QColor getTypeColor(GameObjectType type)
+{
+    switch (type)
+    {
+    case GO_PAPER:
+        return Qt::red;
+    case GO_ROCK:
+        return Qt::blue;
+    case GO_SCISSORS:
+        return Qt::green;
+    default:
+        qDebug() << "getTypeColor - unknown type";
+    }
+}
+
 GameObject::GameObject(QWidget *parent, GameObjectType goType) : QWidget(parent),
     m_type(goType)
 {
+    m_color = getTypeColor(goType);
 }
 
 void GameObject::setType(GameObjectType type)
 {
     m_type = type;
+    m_color = getTypeColor(m_type);
 }
 
 GameObjectType GameObject::getType()
@@ -100,5 +119,6 @@ void GameObject::checkCollided(GameObject *other)
 
 void GameObject::paintEvent(QPaintEvent *paintEvent)
 {
-
+    QPainter painter(this);
+    painter.fillRect(geometry(), m_color);
 }

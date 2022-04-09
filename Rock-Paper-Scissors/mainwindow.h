@@ -31,6 +31,7 @@ private:
     void paintEvent(QPaintEvent* paintEvent) override;
 
     GameObjectType m_type;
+    QColor m_color;
 };
 
 class MainWindow : public QMainWindow
