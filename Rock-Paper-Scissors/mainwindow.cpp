@@ -152,7 +152,54 @@ void MainWindow::onUpdateGameObjects()
         else
         {
             const int deltaX = geometry().center().x() - geometry().left() - go->geometry().x();
+            int directionX;
+            if(deltaX < 0)
+            {
+                if(deltaX > - 5)
+                {
+                    directionX = 1;
+                }
+                else
+                {
+                    directionX = -1;
+                }
+            }
+            else
+            {
+                if(deltaX < 5)
+                {
+                    directionX = -1;
+                }
+                else
+                {
+                    directionX = 1;
+                }
+            }
+
             const int deltaY = geometry().center().y() - geometry().top() - go->geometry().y();
+            int directionY;
+            if(deltaX < 0)
+            {
+                if(deltaX > - 5)
+                {
+                    directionY = 1;
+                }
+                else
+                {
+                    directionY = -1;
+                }
+            }
+            else
+            {
+                if(deltaX < 5)
+                {
+                    directionY = -1;
+                }
+                else
+                {
+                    directionY = 1;
+                }
+            }
             go->setGeometry(go->geometry().translated(deltaX > 0 ? 1 : -1, deltaY > 0 ? 1 : -1));
         }
     }
