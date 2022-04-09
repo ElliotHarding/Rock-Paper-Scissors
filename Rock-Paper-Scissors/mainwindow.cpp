@@ -27,25 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    reset();
-
-    m_pUpdateGameObjectsTimer = new QTimer(this);
-    connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
-    m_pUpdateGameObjectsTimer->start(Constants::UpdateGameObjectsFrequency);
-}
-
-void MainWindow::reset()
-{
-    //Deleting and re-creating objects each loop is inefficient
-    //but im too lazy to reset each game object
-
-    for(GameObject* go : m_gameObjects)
-    {
-        delete go;
-        go = nullptr;
-    }
-    m_gameObjects.clear();
-
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 25));
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 45));
@@ -76,11 +57,44 @@ void MainWindow::reset()
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 135, 25));
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 135, 45));
 
-    for(GameObject* go : m_gameObjects)
-    {
-        go->raise();
-        go->raise();
-    }
+    m_pUpdateGameObjectsTimer = new QTimer(this);
+    connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
+    m_pUpdateGameObjectsTimer->start(Constants::UpdateGameObjectsFrequency);
+}
+
+void MainWindow::reset()
+{
+    //Wrong - hard coded values
+
+    m_gameObjects[0]->reset(GO_ROCK, 5, 5);
+    m_gameObjects[1]->reset(GO_ROCK, 5, 25);
+    m_gameObjects[2]->reset(GO_ROCK, 5, 45);
+    m_gameObjects[3]->reset(GO_ROCK, 25, 5);
+    m_gameObjects[4]->reset(GO_ROCK, 25, 25);
+    m_gameObjects[5]->reset(GO_ROCK, 25, 45);
+    m_gameObjects[6]->reset(GO_ROCK, 45, 5);
+    m_gameObjects[7]->reset(GO_ROCK, 45, 25);
+    m_gameObjects[8]->reset(GO_ROCK, 45, 45);
+
+    m_gameObjects[9]->reset(GO_PAPER, 175, 175);
+    m_gameObjects[10]->reset(GO_PAPER, 175, 155);
+    m_gameObjects[11]->reset(GO_PAPER, 175, 135);
+    m_gameObjects[12]->reset(GO_PAPER, 155, 175);
+    m_gameObjects[13]->reset(GO_PAPER, 155, 155);
+    m_gameObjects[14]->reset(GO_PAPER, 155, 135);
+    m_gameObjects[15]->reset(GO_PAPER, 135, 175);
+    m_gameObjects[16]->reset(GO_PAPER, 135, 155);
+    m_gameObjects[17]->reset(GO_PAPER, 135, 135);
+
+    m_gameObjects[18]->reset(GO_SCISSORS, 175, 5);
+    m_gameObjects[19]->reset(GO_SCISSORS, 175, 25);
+    m_gameObjects[20]->reset(GO_SCISSORS, 175, 45);
+    m_gameObjects[21]->reset(GO_SCISSORS, 155, 5);
+    m_gameObjects[22]->reset(GO_SCISSORS, 155, 25);
+    m_gameObjects[23]->reset(GO_SCISSORS, 155, 45);
+    m_gameObjects[24]->reset(GO_SCISSORS, 135, 5);
+    m_gameObjects[25]->reset(GO_SCISSORS, 135, 25);
+    m_gameObjects[26]->reset(GO_SCISSORS, 135, 45);
 }
 
 MainWindow::~MainWindow()
@@ -178,10 +192,15 @@ QColor getTypeColor(GameObjectType type)
     }
 }
 
-GameObject::GameObject(QWidget *parent, GameObjectType goType, const int& xPos, const int& yPos) : QWidget(parent),
-    m_type(goType)
+GameObject::GameObject(QWidget *parent, GameObjectType goType, const int& xPos, const int& yPos) : QWidget(parent)
 {
-    m_color = getTypeColor(goType);
+    setType(goType);
+    setGeometry(xPos, yPos, 10, 10);//Todo constify
+}
+
+void GameObject::reset(GameObjectType goType, const int &xPos, const int &yPos)
+{
+    setType(goType);
     setGeometry(xPos, yPos, 10, 10);//Todo constify
 }
 

@@ -22,6 +22,8 @@ class GameObject : public QWidget
 public:
     GameObject(QWidget *parent, GameObjectType goType, const int& xPos, const int& yPos);
 
+    void reset(GameObjectType goType, const int& xPos, const int& yPos);
+
     void setType(GameObjectType type);
     GameObjectType getType();
 
