@@ -145,5 +145,5 @@ void GameObject::checkCollided(GameObject *other)
 void GameObject::paintEvent(QPaintEvent *paintEvent)
 {
     QPainter painter(this);
-    painter.fillRect(geometry(), m_color);
+    painter.fillRect(QRect(0,0,geometry().width(),geometry().height()), m_color);
 }
