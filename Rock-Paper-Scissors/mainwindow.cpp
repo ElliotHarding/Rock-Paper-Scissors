@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QRandomGenerator>
+#include <QThread>
 
 namespace Constants {
     const float UpdateGameObjectsFrequency = 10;
@@ -171,7 +172,15 @@ void MainWindow::onUpdateGameObjects()
     {
         //Todo update winner
 
+        for(GameObject* go : m_gameObjects)
+        {
+            go->update();
+        }
+
+        m_pUpdateGameObjectsTimer->blockSignals(true);
+        QThread::msleep(500);
         reset();
+        m_pUpdateGameObjectsTimer->blockSignals(false);
     }
 
     update();
