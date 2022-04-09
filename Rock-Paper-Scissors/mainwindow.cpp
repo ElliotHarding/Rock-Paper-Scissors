@@ -117,29 +117,29 @@ void MainWindow::onUpdateGameObjects()
     //Update positions
     for(GameObject* go : m_gameObjects)
     {
-        int randomValue = QRandomGenerator::global()->generateDouble() * 5;
-        if(randomValue == 0)
+        int randomValue = QRandomGenerator::global()->generateDouble() * 13;
+        if(randomValue == 0 || randomValue == 1 || randomValue == 2)
         {
             if(go->geometry().right() < geometry().right())
             {
                 go->setGeometry(go->geometry().translated(1, 0));
             }
         }
-        else if(randomValue == 1)
+        else if(randomValue == 3 || randomValue == 4|| randomValue == 5)
         {
             if(go->geometry().left() > 0)
             {
                 go->setGeometry(go->geometry().translated(-1, 0));
             }
         }
-        else if(randomValue == 2)
+        else if(randomValue == 6 || randomValue == 7 || randomValue == 8)
         {
             if(go->geometry().bottom() < geometry().bottom())
             {
                 go->setGeometry(go->geometry().translated(0, 1));
             }
         }
-        else if(randomValue == 3)
+        else if(randomValue == 9 || randomValue == 10 || randomValue == 11)
         {
             if(go->geometry().top() > 0)
             {
