@@ -11,6 +11,11 @@ namespace Constants {
 
     const float UpdateGameObjectsFrequency = 10;
 
+    const int PercentageRandomDirection = 95;
+    const int PercentageCertainRandomDirection = PercentageRandomDirection/4;
+
+    const int MoveAwayFromCenterSize = 10; //Once within x blocks of center, tend to move game object away from center
+
     const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
         {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
         {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_PAPER), GO_PAPER},
@@ -114,35 +119,34 @@ MainWindow::~MainWindow()
 
 void MainWindow::onUpdateGameObjects()
 {
-    int percentageRandomDirection = 90;
-    int percentageCertainRandomDirection = percentageRandomDirection/4;
+
 
     //Update positions
     for(GameObject* go : m_gameObjects)
     {
         int randomValue = QRandomGenerator::global()->generateDouble() * 100;
-        if(randomValue < percentageCertainRandomDirection)
+        if(randomValue < Constants::PercentageCertainRandomDirection)
         {
             if(go->geometry().right() < geometry().right())
             {
                 go->setGeometry(go->geometry().translated(1, 0));
             }
         }
-        else if(randomValue < percentageCertainRandomDirection * 2)
+        else if(randomValue < Constants::PercentageCertainRandomDirection * 2)
         {
             if(go->geometry().left() > 0)
             {
                 go->setGeometry(go->geometry().translated(-1, 0));
             }
         }
-        else if(randomValue < percentageCertainRandomDirection * 3)
+        else if(randomValue < Constants::PercentageCertainRandomDirection * 3)
         {
             if(go->geometry().bottom() < geometry().bottom())
             {
                 go->setGeometry(go->geometry().translated(0, 1));
             }
         }
-        else if(randomValue < percentageCertainRandomDirection * 4)
+        else if(randomValue < Constants::PercentageCertainRandomDirection * 4)
         {
             if(go->geometry().top() > 0)
             {
@@ -151,56 +155,18 @@ void MainWindow::onUpdateGameObjects()
         }
         else
         {
-            const int deltaX = geometry().center().x() - geometry().left() - go->geometry().x();
-            int directionX;
-            if(deltaX < 0)
+            int xFromCenter = go->geometry().x() - geometry().center().x() + geometry().left();
+            int yFromCenter = go->geometry().y() - geometry().center().y() + geometry().top();
+
+            //Move towards center, unless close to it, in which case move away from center
+            if(xFromCenter < Constants::MoveAwayFromCenterSize && xFromCenter > -Constants::MoveAwayFromCenterSize &&
+               yFromCenter < Constants::MoveAwayFromCenterSize && yFromCenter > -Constants::MoveAwayFromCenterSize)
             {
-                if(deltaX > - 5)
-                {
-                    directionX = 1;
-                }
-                else
-                {
-                    directionX = -1;
-                }
-            }
-            else
-            {
-                if(deltaX < 5)
-                {
-                    directionX = -1;
-                }
-                else
-                {
-                    directionX = 1;
-                }
+                xFromCenter *= -1;
+                yFromCenter *= -1;
             }
 
-            const int deltaY = geometry().center().y() - geometry().top() - go->geometry().y();
-            int directionY;
-            if(deltaX < 0)
-            {
-                if(deltaX > - 5)
-                {
-                    directionY = 1;
-                }
-                else
-                {
-                    directionY = -1;
-                }
-            }
-            else
-            {
-                if(deltaX < 5)
-                {
-                    directionY = -1;
-                }
-                else
-                {
-                    directionY = 1;
-                }
-            }
-            go->setGeometry(go->geometry().translated(deltaX > 0 ? 1 : -1, deltaY > 0 ? 1 : -1));
+            go->setGeometry(go->geometry().translated(xFromCenter > 0 ? -1 : 1, yFromCenter > 0 ? -1 : 1));
         }
     }
 
