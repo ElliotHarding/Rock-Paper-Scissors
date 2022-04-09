@@ -6,7 +6,7 @@
 #include <QRandomGenerator>
 
 namespace Constants {
-    const float UpdateGameObjectsFrequency = 50;
+    const float UpdateGameObjectsFrequency = 10;
 
     const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
         {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
@@ -26,6 +26,25 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    reset();
+
+    m_pUpdateGameObjectsTimer = new QTimer(this);
+    connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
+    m_pUpdateGameObjectsTimer->start(Constants::UpdateGameObjectsFrequency);
+}
+
+void MainWindow::reset()
+{
+    //Deleting and re-creating objects each loop is inefficient
+    //but im too lazy to reset each game object
+
+    for(GameObject* go : m_gameObjects)
+    {
+        delete go;
+        go = nullptr;
+    }
+    m_gameObjects.clear();
 
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 25));
@@ -57,9 +76,11 @@ MainWindow::MainWindow(QWidget *parent)
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 135, 25));
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 135, 45));
 
-    m_pUpdateGameObjectsTimer = new QTimer(this);
-    connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
-    m_pUpdateGameObjectsTimer->start(Constants::UpdateGameObjectsFrequency);
+    for(GameObject* go : m_gameObjects)
+    {
+        go->raise();
+        go->raise();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -116,13 +137,27 @@ void MainWindow::onUpdateGameObjects()
         }
     }
 
-    //Check collisions - update types
+    //Check collisions - update types - check if all the same
+    const GameObjectType firstGOT = m_gameObjects[0]->getType();
+    bool allSame = true;
     for(GameObject* go1 : m_gameObjects)
     {
         for(GameObject* go2 : m_gameObjects)
         {
             go1->checkCollided(go2);
         }
+
+        if(allSame && go1->getType() != firstGOT)
+        {
+            allSame = false;
+        }
+    }
+
+    if(allSame)
+    {
+        //Todo update winner
+
+        reset();
     }
 
     update();

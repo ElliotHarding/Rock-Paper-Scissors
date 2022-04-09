@@ -46,6 +46,8 @@ private slots:
     void onUpdateGameObjects();
 
 private:
+    void reset();
+
     Ui::MainWindow *ui;
 
     QTimer* m_pUpdateGameObjectsTimer;
