@@ -6,7 +6,7 @@
 #include <QRandomGenerator>
 
 namespace Constants {
-    const float UpdateGameObjectsFrequency = 200;
+    const float UpdateGameObjectsFrequency = 100;
 
     const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
         {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
@@ -37,25 +37,25 @@ MainWindow::MainWindow(QWidget *parent)
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 45, 25));
     m_gameObjects.push_back(new GameObject(this, GO_ROCK, 45, 45));
 
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 195, 195));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 195, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 195, 155));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 195));
     m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
     m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 155));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 155, 195));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 135));
     m_gameObjects.push_back(new GameObject(this, GO_PAPER, 155, 175));
     m_gameObjects.push_back(new GameObject(this, GO_PAPER, 155, 155));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 155, 135));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 135, 175));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 135, 155));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 135, 135));
 
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 195, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 195, 25));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 195, 45));
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 25));
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 45));
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 155, 5));
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 155, 25));
     m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 155, 45));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 135, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 135, 25));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 135, 45));
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
@@ -110,8 +110,8 @@ void MainWindow::onUpdateGameObjects()
         }
         else
         {
-            const int deltaX = geometry().center().x() - go->geometry().x();
-            const int deltaY = geometry().center().y() - go->geometry().y();
+            const int deltaX = geometry().center().x() - geometry().left() - go->geometry().x();
+            const int deltaY = geometry().center().y() - geometry().top() - go->geometry().y();
             go->setGeometry(go->geometry().translated(deltaX > 0 ? 1 : -1, deltaY > 0 ? 1 : -1));
         }
     }
