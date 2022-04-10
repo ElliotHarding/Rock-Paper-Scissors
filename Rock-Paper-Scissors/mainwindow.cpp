@@ -7,30 +7,41 @@
 #include <QThread>
 
 namespace Constants {
-    const QPoint SpawnRock = QPoint(5, 5);
-    const QPoint SpawnPaper = QPoint(175, 175);
-    const QPoint SpawnScissors = QPoint(5, 175);
 
-    const int GameObjectSize = 10;
+const bool LoopGame = true;
 
-    const float UpdateGameObjectsFrequency = 10;
+const QMap<GameObjectType, int> GameObjectCount = {
+    {GO_ROCK, 8},
+    {GO_PAPER, 8},
+    {GO_SCISSORS, 8}
+};
 
-    const int PercentageRandomDirection = 95;
-    const int PercentageCertainRandomDirection = PercentageRandomDirection/4;
+const QMap<GameObjectType, QPoint> GameObjectSpawn = {
+    {GO_ROCK, QPoint(5, 5)},
+    {GO_PAPER, QPoint(175, 175)},
+    {GO_SCISSORS, QPoint(5, 175)}
+};
 
-    const int MoveAwayFromCenterSize = 10; //Once within x blocks of center, tend to move game object away from center
+const int GameObjectSize = 10;
 
-    const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
-        {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
-        {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_PAPER), GO_PAPER},
-        {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_SCISSORS), GO_ROCK},
-        {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_ROCK), GO_PAPER},
-        {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_PAPER), GO_PAPER},
-        {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_SCISSORS), GO_SCISSORS},
-        {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_ROCK), GO_ROCK},
-        {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_PAPER), GO_SCISSORS},
-        {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_SCISSORS), GO_SCISSORS}
-    };
+const float UpdateGameObjectsFrequency = 10;
+
+const int PercentageRandomDirection = 95;
+const int PercentageCertainRandomDirection = PercentageRandomDirection/4;
+
+const int MoveAwayFromCenterSize = 10; //Once within x blocks of center, tend to move game object away from center
+
+const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
+    {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
+    {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_PAPER), GO_PAPER},
+    {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_SCISSORS), GO_ROCK},
+    {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_ROCK), GO_PAPER},
+    {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_PAPER), GO_PAPER},
+    {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_SCISSORS), GO_SCISSORS},
+    {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_ROCK), GO_ROCK},
+    {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_PAPER), GO_SCISSORS},
+    {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_SCISSORS), GO_SCISSORS}
+};
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -39,35 +50,13 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
-
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
-
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    for(GameObjectType type : Constants::GameObjectSpawn.keys())
+    {
+        for(int i = 0; i < Constants::GameObjectCount[type]; i++)
+        {
+            m_gameObjects.push_back(new GameObject(this, type, Constants::GameObjectSpawn[type]));
+        }
+    }
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
@@ -76,37 +65,22 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::reset()
 {
-    //Wrong - hard coded values
-
-    m_gameObjects[0]->reset(GO_ROCK, Constants::SpawnRock);
-    m_gameObjects[1]->reset(GO_ROCK, Constants::SpawnRock);
-    m_gameObjects[2]->reset(GO_ROCK, Constants::SpawnRock);
-    m_gameObjects[3]->reset(GO_ROCK, Constants::SpawnRock);
-    m_gameObjects[4]->reset(GO_ROCK, Constants::SpawnRock);
-    m_gameObjects[5]->reset(GO_ROCK, Constants::SpawnRock);
-    m_gameObjects[6]->reset(GO_ROCK, Constants::SpawnRock);
-    m_gameObjects[7]->reset(GO_ROCK, Constants::SpawnRock);
-    m_gameObjects[8]->reset(GO_ROCK, Constants::SpawnRock);
-
-    m_gameObjects[9]->reset(GO_PAPER,  Constants::SpawnPaper);
-    m_gameObjects[10]->reset(GO_PAPER, Constants::SpawnPaper);
-    m_gameObjects[11]->reset(GO_PAPER, Constants::SpawnPaper);
-    m_gameObjects[12]->reset(GO_PAPER, Constants::SpawnPaper);
-    m_gameObjects[13]->reset(GO_PAPER, Constants::SpawnPaper);
-    m_gameObjects[14]->reset(GO_PAPER, Constants::SpawnPaper);
-    m_gameObjects[15]->reset(GO_PAPER, Constants::SpawnPaper);
-    m_gameObjects[16]->reset(GO_PAPER, Constants::SpawnPaper);
-    m_gameObjects[17]->reset(GO_PAPER, Constants::SpawnPaper);
-
-    m_gameObjects[18]->reset(GO_SCISSORS, Constants::SpawnScissors);
-    m_gameObjects[19]->reset(GO_SCISSORS, Constants::SpawnScissors);
-    m_gameObjects[20]->reset(GO_SCISSORS, Constants::SpawnScissors);
-    m_gameObjects[21]->reset(GO_SCISSORS, Constants::SpawnScissors);
-    m_gameObjects[22]->reset(GO_SCISSORS, Constants::SpawnScissors);
-    m_gameObjects[23]->reset(GO_SCISSORS, Constants::SpawnScissors);
-    m_gameObjects[24]->reset(GO_SCISSORS, Constants::SpawnScissors);
-    m_gameObjects[25]->reset(GO_SCISSORS, Constants::SpawnScissors);
-    m_gameObjects[26]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    int count = 0;
+    for(GameObjectType type : Constants::GameObjectSpawn.keys())
+    {
+        for(int i = 0; i < Constants::GameObjectCount[type]; i++)
+        {
+            if(count < m_gameObjects.count())
+            {
+                m_gameObjects[count]->reset(type, Constants::GameObjectSpawn[type]);
+            }
+            else
+            {
+                m_gameObjects.push_back(new GameObject(this, type, Constants::GameObjectSpawn[type]));
+            }
+            count++;
+        }
+    }
 }
 
 MainWindow::~MainWindow()
@@ -190,7 +164,7 @@ void MainWindow::onUpdateGameObjects()
         }
     }
 
-    if(allSame)
+    if(Constants::LoopGame && allSame)
     {
         //Todo update winner
 
@@ -214,6 +188,7 @@ QColor getTypeColor(GameObjectType type)
     default:
         qDebug() << "getTypeColor - unknown type";
     }
+    return QColor();
 }
 
 GameObject::GameObject(QWidget *parent, GameObjectType goType, const QPoint& spawnPoint) : QWidget(parent)
