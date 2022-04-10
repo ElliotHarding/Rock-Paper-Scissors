@@ -20,9 +20,9 @@ class GameObject : public QWidget
     Q_OBJECT
 
 public:
-    GameObject(QWidget *parent, GameObjectType goType, const int& xPos, const int& yPos);
+    GameObject(QWidget *parent, GameObjectType goType, const QPoint& spawnPoint);
 
-    void reset(GameObjectType goType, const int& xPos, const int& yPos);
+    void reset(GameObjectType goType, const QPoint& spawnPoint);
 
     void setType(GameObjectType type);
     GameObjectType getType();

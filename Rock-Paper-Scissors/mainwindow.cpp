@@ -7,6 +7,10 @@
 #include <QThread>
 
 namespace Constants {
+    const QPoint SpawnRock = QPoint(5, 5);
+    const QPoint SpawnPaper = QPoint(175, 175);
+    const QPoint SpawnScissors = QPoint(5, 175);
+
     const int GameObjectSize = 10;
 
     const float UpdateGameObjectsFrequency = 10;
@@ -35,35 +39,35 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_ROCK, 5, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
+    m_gameObjects.push_back(new GameObject(this, GO_ROCK, Constants::SpawnRock));
 
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
-    m_gameObjects.push_back(new GameObject(this, GO_PAPER, 175, 175));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
+    m_gameObjects.push_back(new GameObject(this, GO_PAPER, Constants::SpawnPaper));
 
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
-    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, 175, 5));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
+    m_gameObjects.push_back(new GameObject(this, GO_SCISSORS, Constants::SpawnScissors));
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
@@ -74,35 +78,35 @@ void MainWindow::reset()
 {
     //Wrong - hard coded values
 
-    m_gameObjects[0]->reset(GO_ROCK, 5,5);
-    m_gameObjects[1]->reset(GO_ROCK, 5,5);
-    m_gameObjects[2]->reset(GO_ROCK, 5,5);
-    m_gameObjects[3]->reset(GO_ROCK, 5,5);
-    m_gameObjects[4]->reset(GO_ROCK, 5,5);
-    m_gameObjects[5]->reset(GO_ROCK, 5,5);
-    m_gameObjects[6]->reset(GO_ROCK, 5,5);
-    m_gameObjects[7]->reset(GO_ROCK, 5,5);
-    m_gameObjects[8]->reset(GO_ROCK, 5,5);
+    m_gameObjects[0]->reset(GO_ROCK, Constants::SpawnRock);
+    m_gameObjects[1]->reset(GO_ROCK, Constants::SpawnRock);
+    m_gameObjects[2]->reset(GO_ROCK, Constants::SpawnRock);
+    m_gameObjects[3]->reset(GO_ROCK, Constants::SpawnRock);
+    m_gameObjects[4]->reset(GO_ROCK, Constants::SpawnRock);
+    m_gameObjects[5]->reset(GO_ROCK, Constants::SpawnRock);
+    m_gameObjects[6]->reset(GO_ROCK, Constants::SpawnRock);
+    m_gameObjects[7]->reset(GO_ROCK, Constants::SpawnRock);
+    m_gameObjects[8]->reset(GO_ROCK, Constants::SpawnRock);
 
-    m_gameObjects[9]->reset(GO_PAPER, 175, 175);
-    m_gameObjects[10]->reset(GO_PAPER, 175, 175);
-    m_gameObjects[11]->reset(GO_PAPER, 175, 175);
-    m_gameObjects[12]->reset(GO_PAPER, 175, 175);
-    m_gameObjects[13]->reset(GO_PAPER, 175, 175);
-    m_gameObjects[14]->reset(GO_PAPER, 175, 175);
-    m_gameObjects[15]->reset(GO_PAPER, 175, 175);
-    m_gameObjects[16]->reset(GO_PAPER, 175, 175);
-    m_gameObjects[17]->reset(GO_PAPER, 175, 175);
+    m_gameObjects[9]->reset(GO_PAPER,  Constants::SpawnPaper);
+    m_gameObjects[10]->reset(GO_PAPER, Constants::SpawnPaper);
+    m_gameObjects[11]->reset(GO_PAPER, Constants::SpawnPaper);
+    m_gameObjects[12]->reset(GO_PAPER, Constants::SpawnPaper);
+    m_gameObjects[13]->reset(GO_PAPER, Constants::SpawnPaper);
+    m_gameObjects[14]->reset(GO_PAPER, Constants::SpawnPaper);
+    m_gameObjects[15]->reset(GO_PAPER, Constants::SpawnPaper);
+    m_gameObjects[16]->reset(GO_PAPER, Constants::SpawnPaper);
+    m_gameObjects[17]->reset(GO_PAPER, Constants::SpawnPaper);
 
-    m_gameObjects[18]->reset(GO_SCISSORS, 175, 5);
-    m_gameObjects[19]->reset(GO_SCISSORS, 175, 5);
-    m_gameObjects[20]->reset(GO_SCISSORS, 175, 5);
-    m_gameObjects[21]->reset(GO_SCISSORS, 175, 5);
-    m_gameObjects[22]->reset(GO_SCISSORS, 175, 5);
-    m_gameObjects[23]->reset(GO_SCISSORS, 175, 5);
-    m_gameObjects[24]->reset(GO_SCISSORS, 175, 5);
-    m_gameObjects[25]->reset(GO_SCISSORS, 175, 5);
-    m_gameObjects[26]->reset(GO_SCISSORS, 175, 5);
+    m_gameObjects[18]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    m_gameObjects[19]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    m_gameObjects[20]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    m_gameObjects[21]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    m_gameObjects[22]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    m_gameObjects[23]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    m_gameObjects[24]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    m_gameObjects[25]->reset(GO_SCISSORS, Constants::SpawnScissors);
+    m_gameObjects[26]->reset(GO_SCISSORS, Constants::SpawnScissors);
 }
 
 MainWindow::~MainWindow()
@@ -212,15 +216,15 @@ QColor getTypeColor(GameObjectType type)
     }
 }
 
-GameObject::GameObject(QWidget *parent, GameObjectType goType, const int& xPos, const int& yPos) : QWidget(parent)
+GameObject::GameObject(QWidget *parent, GameObjectType goType, const QPoint& spawnPoint) : QWidget(parent)
 {
-    reset(goType, xPos, yPos);
+    reset(goType, spawnPoint);
 }
 
-void GameObject::reset(GameObjectType goType, const int &xPos, const int &yPos)
+void GameObject::reset(GameObjectType goType, const QPoint& spawnPoint)
 {
     setType(goType);
-    setGeometry(xPos, yPos, Constants::GameObjectSize, Constants::GameObjectSize);
+    setGeometry(spawnPoint.x(), spawnPoint.y(), Constants::GameObjectSize, Constants::GameObjectSize);
 }
 
 void GameObject::setType(GameObjectType type)
