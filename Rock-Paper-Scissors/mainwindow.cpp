@@ -5,12 +5,13 @@
 #include <QPainter>
 #include <QRandomGenerator>
 #include <QThread>
+#include <QLayout>
 
 namespace Constants {
 
 const bool LoopGame = true;
 
-/*const*/ QMap<GameObjectType, int> GameObjectCount = {
+const QMap<GameObjectType, int> GameObjectCount = {
     {GO_ROCK, 8},
     {GO_PAPER, 8},
     {GO_SCISSORS, 8}
@@ -65,8 +66,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::reset()
 {
-    Constants::GameObjectCount[GO_PAPER] = 25;
-
     int count = 0;
     for(GameObjectType type : Constants::GameObjectSpawn.keys())
     {
@@ -79,6 +78,7 @@ void MainWindow::reset()
             else
             {
                 m_gameObjects.push_back(new GameObject(this, type, Constants::GameObjectSpawn[type]));
+                layout()->addWidget(m_gameObjects[count]);
             }
             count++;
         }
