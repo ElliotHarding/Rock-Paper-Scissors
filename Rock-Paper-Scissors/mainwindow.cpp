@@ -10,7 +10,7 @@ namespace Constants {
 
 const bool LoopGame = true;
 
-const QMap<GameObjectType, int> GameObjectCount = {
+/*const*/ QMap<GameObjectType, int> GameObjectCount = {
     {GO_ROCK, 8},
     {GO_PAPER, 8},
     {GO_SCISSORS, 8}
@@ -65,6 +65,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::reset()
 {
+    Constants::GameObjectCount[GO_PAPER] = 25;
+
     int count = 0;
     for(GameObjectType type : Constants::GameObjectSpawn.keys())
     {
@@ -80,6 +82,12 @@ void MainWindow::reset()
             }
             count++;
         }
+    }
+
+    while(count < m_gameObjects.count())
+    {
+        delete m_gameObjects[count];
+        m_gameObjects.removeAt(count);
     }
 }
 
@@ -228,5 +236,5 @@ void GameObject::checkCollided(GameObject *other)
 void GameObject::paintEvent(QPaintEvent *paintEvent)
 {
     QPainter painter(this);
-    painter.fillRect(QRect(0,0,geometry().width(),geometry().height()), m_color);
+    painter.fillRect(QRect(0,0,Constants::GameObjectSize,Constants::GameObjectSize), m_color);
 }
