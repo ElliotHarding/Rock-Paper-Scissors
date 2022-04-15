@@ -23,6 +23,13 @@ const QMap<GameObjectType, QPoint> GameObjectSpawn = {
     {GO_SCISSORS, QPoint(5, 175)}
 };
 
+const QMap<GameObjectType, QColor> GameObjectColor =
+{
+    {GO_ROCK, Qt::red},
+    {GO_PAPER, Qt::blue},
+    {GO_SCISSORS,Qt::green}
+};
+
 const int GameObjectSize = 10;
 
 const float UpdateGameObjectsFrequency = 10;
@@ -43,8 +50,13 @@ const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResul
     {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_PAPER), GO_SCISSORS},
     {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_SCISSORS), GO_SCISSORS}
 };
+
+const int MsBetweenLoops = 500;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///MainWindow
+///
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -157,7 +169,7 @@ void MainWindow::onUpdateGameObjects()
     }
 
     //Check collisions - update types - check if all the same
-    const GameObjectType firstGOT = m_gameObjects[0]->getType();
+    const GameObjectType firstGOT = m_gameObjects[0]->getType();//Assumes gameObjects contains something
     bool allSame = true;
     for(GameObject* go1 : m_gameObjects)
     {
@@ -177,28 +189,15 @@ void MainWindow::onUpdateGameObjects()
         //Todo update winner
 
         m_pUpdateGameObjectsTimer->blockSignals(true);
-        QThread::msleep(500);
+        QThread::msleep(Constants::MsBetweenLoops);
         reset();
         m_pUpdateGameObjectsTimer->blockSignals(false);
     }
 }
 
-QColor getTypeColor(GameObjectType type)
-{
-    switch (type)
-    {
-    case GO_PAPER:
-        return Qt::red;
-    case GO_ROCK:
-        return Qt::blue;
-    case GO_SCISSORS:
-        return Qt::green;
-    default:
-        qDebug() << "getTypeColor - unknown type";
-    }
-    return QColor();
-}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///GameObject
+///
 GameObject::GameObject(QWidget *parent, GameObjectType goType, const QPoint& spawnPoint) : QWidget(parent)
 {
     reset(goType, spawnPoint);
@@ -215,7 +214,7 @@ void GameObject::setType(GameObjectType type)
     if(m_type != type)
     {
         m_type = type;
-        m_color = getTypeColor(m_type);
+        m_color = Constants::GameObjectColor[m_type];
         repaint();
     }
 }
