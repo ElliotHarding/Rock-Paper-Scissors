@@ -17,6 +17,36 @@ DLG_Settings::~DLG_Settings()
     delete ui;
 }
 
+bool DLG_Settings::loopGame()
+{
+    return ui->cb_loopGame->isChecked();
+}
+
+int DLG_Settings::secondsBetweenLoops() const
+{
+    return ui->sb_secondsBetweenLoops->value();
+}
+
+int DLG_Settings::gameObjectSize() const
+{
+    return ui->sb_gameObjectSize->value();
+}
+
+int DLG_Settings::moveUpdateFrequencyMs() const
+{
+    return ui->sb_updateFrequency->value();
+}
+
+int DLG_Settings::moveRandomDirectionPercentage() const
+{
+    return ui->sb_moveRandomPercentage->value();
+}
+
+int DLG_Settings::centerPushRange() const
+{
+    return ui->sb_centerPushRange->value();
+}
+
 void DLG_Settings::on_btn_addGameObjectSettings_clicked()
 {
     QListWidgetItem* item = new QListWidgetItem();
