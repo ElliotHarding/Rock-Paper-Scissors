@@ -51,6 +51,7 @@ private slots:
 
     void onStart();
     void onStop();
+    void onReset();
     void onUpdateMoveFrequency(int frequencyMs);
 
 private:

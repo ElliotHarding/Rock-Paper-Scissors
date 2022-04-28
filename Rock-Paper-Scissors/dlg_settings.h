@@ -30,6 +30,7 @@ public:
 signals:
     void onStart();
     void onStop();
+    void onReset();
     void onUpdateMoveFrequency(int moveFrequencyMs);
 
 private slots:
@@ -41,6 +42,8 @@ private slots:
     void on_btn_stop_clicked();
 
     void on_sb_updateFrequency_valueChanged(int value);
+
+    void on_btn_reset_clicked();
 
 private:
     Ui::DLG_Settings *ui;

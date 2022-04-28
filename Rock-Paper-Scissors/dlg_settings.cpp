@@ -103,3 +103,8 @@ void DLG_Settings::on_sb_updateFrequency_valueChanged(int value)
 {
     emit onUpdateMoveFrequency(value);
 }
+
+void DLG_Settings::on_btn_reset_clicked()
+{
+    emit onReset();
+}

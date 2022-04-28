@@ -39,14 +39,14 @@
   <widget class="QCheckBox" name="cb_loopGame">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>81</width>
+     <x>70</x>
+     <y>62</y>
+     <width>51</width>
      <height>17</height>
     </rect>
    </property>
    <property name="text">
-    <string>Loop Game</string>
+    <string>Loop</string>
    </property>
   </widget>
   <widget class="QSpinBox" name="sb_updateFrequency">
@@ -257,6 +257,19 @@
    </property>
    <property name="text">
     <string>Game Setup</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_reset">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Reset</string>
    </property>
   </widget>
  </widget>
