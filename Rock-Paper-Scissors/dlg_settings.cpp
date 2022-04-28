@@ -85,6 +85,12 @@ int DLG_Settings::centerPushRange() const
     return ui->sb_centerPushRange->value();
 }
 
+void DLG_Settings::closeEvent(QCloseEvent* e)
+{
+    emit onClose();
+    QDialog::closeEvent(e);
+}
+
 void DLG_Settings::on_btn_addGameObjectSettings_clicked()
 {
     addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow1);

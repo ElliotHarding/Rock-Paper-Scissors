@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_pDlgSettings = new DLG_Settings(this);
     m_pDlgSettings->show();
 
+    connect(m_pDlgSettings, SIGNAL(onClose()), this, SLOT(onClose()));
     connect(m_pDlgSettings, SIGNAL(onStart()), this, SLOT(onStart()));
     connect(m_pDlgSettings, SIGNAL(onStop()), this, SLOT(onStop()));
     connect(m_pDlgSettings, SIGNAL(onReset()), this, SLOT(onReset()));
@@ -192,6 +193,11 @@ void MainWindow::onUpdateGameObjects()
     }
 }
 
+void MainWindow::onClose()
+{
+    close();
+}
+
 void MainWindow::onStart()
 {
     m_pUpdateGameObjectsTimer->start(m_pDlgSettings->moveUpdateFrequencyMs());
@@ -253,7 +259,7 @@ void GameObject::checkCollided(GameObject *other)
     }
 }
 
-void GameObject::paintEvent(QPaintEvent *paintEvent)
+void GameObject::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
     painter.fillRect(QRect(0,0,Constants::GameObjectSize,Constants::GameObjectSize), m_color);

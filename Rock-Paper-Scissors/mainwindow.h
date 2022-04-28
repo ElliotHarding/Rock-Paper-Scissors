@@ -42,6 +42,7 @@ public:
 private slots:
     void onUpdateGameObjects();
 
+    void onClose();
     void onStart();
     void onStop();
     void onReset();
