@@ -27,10 +27,20 @@ public:
     int moveRandomDirectionPercentage() const; //Percentage chance a game object moves in a random direction versus heading towards center
     int centerPushRange() const; //Once within x blocks of center, tend to move game object away from center
 
+signals:
+    void onStart();
+    void onStop();
+    void onUpdateMoveFrequency(int moveFrequencyMs);
+
 private slots:
     void on_btn_addGameObjectSettings_clicked();
 
     void onDelete(QListWidgetItem* pListWidgetItem);
+
+    void on_btn_start_clicked();
+    void on_btn_stop_clicked();
+
+    void on_sb_updateFrequency_valueChanged(int value);
 
 private:
     Ui::DLG_Settings *ui;

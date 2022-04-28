@@ -49,6 +49,10 @@ public:
 private slots:
     void onUpdateGameObjects();
 
+    void onStart();
+    void onStop();
+    void onUpdateMoveFrequency(int frequencyMs);
+
 private:
     void reset();
 

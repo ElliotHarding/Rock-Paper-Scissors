@@ -88,3 +88,18 @@ void DLG_Settings::onDelete(QListWidgetItem *pListWidgetItem)
         delete pListWidgetItem; //todo - check if the widget that still has ptr to pListWidgetItem is broken or something...
     }
 }
+
+void DLG_Settings::on_btn_start_clicked()
+{
+    emit onStart();
+}
+
+void DLG_Settings::on_btn_stop_clicked()
+{
+    emit onStop();
+}
+
+void DLG_Settings::on_sb_updateFrequency_valueChanged(int value)
+{
+    emit onUpdateMoveFrequency(value);
+}

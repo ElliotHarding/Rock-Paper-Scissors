@@ -55,6 +55,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_pDlgSettings = new DLG_Settings(this);
     m_pDlgSettings->show();
 
+    connect(m_pDlgSettings, SIGNAL(onStart()), this, SLOT(onStart()));
+    connect(m_pDlgSettings, SIGNAL(onStop()), this, SLOT(onStop()));
+    connect(m_pDlgSettings, SIGNAL(onUpdateMoveFrequency(int)), this, SLOT(onUpdateMoveFrequency(int)));
+
     for(GameObjectType type : Constants::GameObjectSpawn.keys())
     {
         for(int i = 0; i < Constants::GameObjectCount[type]; i++)
@@ -196,6 +200,25 @@ void MainWindow::onUpdateGameObjects()
             m_pUpdateGameObjectsTimer->start(m_pDlgSettings->moveUpdateFrequencyMs());
         }
     }
+}
+
+void MainWindow::onStart()
+{
+    m_pUpdateGameObjectsTimer->start(m_pDlgSettings->moveUpdateFrequencyMs());
+}
+
+void MainWindow::onStop()
+{
+    m_pUpdateGameObjectsTimer->stop();
+}
+
+void MainWindow::onUpdateMoveFrequency(int frequencyMs)
+{
+    if(m_pUpdateGameObjectsTimer->isActive())
+    {
+        m_pUpdateGameObjectsTimer->stop();
+    }
+    m_pUpdateGameObjectsTimer->start(frequencyMs);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
