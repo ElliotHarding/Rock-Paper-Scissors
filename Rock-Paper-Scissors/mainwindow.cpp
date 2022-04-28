@@ -11,13 +11,6 @@ namespace Constants {
 
 const int GameObjectSize = 10;
 
-const QMap<GameObjectType, QColor> GameObjectColor =
-{
-    {"Red", Qt::red},
-    {"Green", Qt::blue},
-    {"Blue",Qt::green}
-};
-
 const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
     {QPair<GameObjectType, GameObjectType>("Red", "Red"), "Red"},
     {QPair<GameObjectType, GameObjectType>("Red", "Green"), "Green"},
@@ -242,7 +235,7 @@ void GameObject::setType(GameObjectType type)
     if(m_type != type)
     {
         m_type = type;
-        m_color = Constants::GameObjectColor[m_type];
+        m_color = QColor(type);
         repaint();
     }
 }

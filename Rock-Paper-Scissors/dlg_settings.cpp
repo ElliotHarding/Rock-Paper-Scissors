@@ -7,8 +7,6 @@ const GameObjectSpawnSettings InitialSpawnSettingsRow1 = {"Red", QPoint(0, 0), 5
 const GameObjectSpawnSettings InitialSpawnSettingsRow2 = {"Green", QPoint(0, 200), 5};
 const GameObjectSpawnSettings InitialSpawnSettingsRow3 = {"Blue", QPoint(200, 200), 5};
 
-const GameObjectSpawnSettings SpawnSettingsRow = {"Red", QPoint(100, 100), 5};
-
 const bool LoopGame = false;//Auto restart game
 const int AutoRestartDelay = 10;//Seconds between auto restarted game
 const int MoveUpdateFrequency = 10;//How often gameobjects positions are updated (ms)
@@ -89,7 +87,7 @@ int DLG_Settings::centerPushRange() const
 
 void DLG_Settings::on_btn_addGameObjectSettings_clicked()
 {
-    addGameObjectSettingsRow(StartSettings::SpawnSettingsRow);
+    addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow1);
 }
 
 void DLG_Settings::addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings)
