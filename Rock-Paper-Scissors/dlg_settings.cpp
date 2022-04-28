@@ -14,13 +14,16 @@ const int MoveUpdateFrequency = 10;//How often gameobjects positions are updated
 const int MoveRandomDirectionPercentageChance = 95;//Percentage chance a game object moves in a random direction versus heading towards center
 const int CenterPushRange = 10;//Once within x blocks of center, tend to move game object away from center
 }
-
+#include <QScrollArea>
 DLG_Settings::DLG_Settings(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DLG_Settings)
 {
     ui->setupUi(this);
     ui->listWidget_gameObjectSettings->setDragDropMode(QAbstractItemView::DragDropMode::NoDragDrop);
+
+    QScrollArea* scrollArea = new QScrollArea(this);
+    scrollArea->setWidget(ui->wdg_collisionTable);
 
     setDefaultSettings();
     updateCollisionTable();
@@ -48,10 +51,11 @@ void DLG_Settings::updateCollisionTable()
 {
     QList<GameObjectType> types;
 
-    int layoutRow = 40;
-    int layoutCol = 40;
+    int layoutRow = 1;
+    int layoutCol = 1;
     QGridLayout* layout = new QGridLayout(ui->wdg_collisionTable);
-
+    layout->setVerticalSpacing(5);
+    layout->setHorizontalSpacing(5);
     const int rows = ui->listWidget_gameObjectSettings->count();
     for(int row = 0; row < rows; row++)
     {
