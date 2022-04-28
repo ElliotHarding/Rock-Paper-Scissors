@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>280</width>
+    <width>272</width>
     <height>32</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QPushButton" name="btn_delete">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>245</x>
      <y>5</y>
      <width>22</width>
      <height>22</height>
@@ -29,7 +29,7 @@
   <widget class="QSpinBox" name="sb_spawnPosX">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>105</x>
      <y>5</y>
      <width>30</width>
      <height>22</height>
@@ -51,7 +51,7 @@
   <widget class="QSpinBox" name="sb_spawnPosY">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>145</x>
      <y>5</y>
      <width>30</width>
      <height>22</height>
@@ -70,7 +70,7 @@
   <widget class="QLabel" name="lbl_posComma">
    <property name="geometry">
     <rect>
-     <x>135</x>
+     <x>130</x>
      <y>5</y>
      <width>21</width>
      <height>21</height>
@@ -86,7 +86,7 @@
   <widget class="QSpinBox" name="sb_spawnCount">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>195</x>
      <y>5</y>
      <width>30</width>
      <height>22</height>
@@ -105,7 +105,7 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>5</x>
      <y>5</y>
      <width>80</width>
      <height>22</height>

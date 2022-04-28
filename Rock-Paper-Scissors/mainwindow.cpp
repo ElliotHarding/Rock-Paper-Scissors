@@ -183,14 +183,18 @@ void MainWindow::onUpdateGameObjects()
         }
     }
 
-    if(m_pDlgSettings->loopGame() && allSame)
+    if(allSame)
     {
-        //Todo update winner
+        //todo update winner
 
-        m_pUpdateGameObjectsTimer->blockSignals(true);
-        QThread::msleep(m_pDlgSettings->msBetweenLoops());
-        reset();
-        m_pUpdateGameObjectsTimer->blockSignals(false);
+        m_pUpdateGameObjectsTimer->stop();
+
+        if(m_pDlgSettings->loopGame())
+        {
+            QThread::msleep(m_pDlgSettings->msBetweenLoops());
+            reset();
+            m_pUpdateGameObjectsTimer->start(m_pDlgSettings->moveUpdateFrequencyMs());
+        }
     }
 }
 
