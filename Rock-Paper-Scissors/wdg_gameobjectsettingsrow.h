@@ -8,9 +8,10 @@ namespace Ui {
 class WDG_GameObjectSettingsRow;
 }
 
+typedef QString GameObjectType;
 struct GameObjectSpawnSettings
 {
-    QString type;
+    GameObjectType type;
     QPoint position;
     int count;
 };

@@ -10,13 +10,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-enum GameObjectType
-{
-    GO_ROCK,
-    GO_PAPER,
-    GO_SCISSORS
-};
-
 class GameObject : public QWidget
 {
     Q_OBJECT

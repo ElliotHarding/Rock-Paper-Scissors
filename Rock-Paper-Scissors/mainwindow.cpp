@@ -12,34 +12,34 @@ namespace Constants {
 const int GameObjectSize = 10;
 
 const QMap<GameObjectType, int> GameObjectCount = {
-    {GO_ROCK, 8},
-    {GO_PAPER, 8},
-    {GO_SCISSORS, 8}
+    {"Red", 8},
+    {"Green", 8},
+    {"Blue", 8}
 };
 
 const QMap<GameObjectType, QPoint> GameObjectSpawn = {
-    {GO_ROCK, QPoint(5, 5)},
-    {GO_PAPER, QPoint(175, 175)},
-    {GO_SCISSORS, QPoint(5, 175)}
+    {"Red", QPoint(5, 5)},
+    {"Green", QPoint(175, 175)},
+    {"Blue", QPoint(5, 175)}
 };
 
 const QMap<GameObjectType, QColor> GameObjectColor =
 {
-    {GO_ROCK, Qt::red},
-    {GO_PAPER, Qt::blue},
-    {GO_SCISSORS,Qt::green}
+    {"Red", Qt::red},
+    {"Green", Qt::blue},
+    {"Blue",Qt::green}
 };
 
 const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
-    {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
-    {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_PAPER), GO_PAPER},
-    {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_SCISSORS), GO_ROCK},
-    {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_ROCK), GO_PAPER},
-    {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_PAPER), GO_PAPER},
-    {QPair<GameObjectType, GameObjectType>(GO_PAPER, GO_SCISSORS), GO_SCISSORS},
-    {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_ROCK), GO_ROCK},
-    {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_PAPER), GO_SCISSORS},
-    {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_SCISSORS), GO_SCISSORS}
+    {QPair<GameObjectType, GameObjectType>("Red", "Red"), "Red"},
+    {QPair<GameObjectType, GameObjectType>("Red", "Green"), "Green"},
+    {QPair<GameObjectType, GameObjectType>("Red", "Blue"), "Red"},
+    {QPair<GameObjectType, GameObjectType>("Green", "Red"), "Green"},
+    {QPair<GameObjectType, GameObjectType>("Green", "Green"), "Green"},
+    {QPair<GameObjectType, GameObjectType>("Green", "Blue"), "Blue"},
+    {QPair<GameObjectType, GameObjectType>("Blue", "Red"), "Red"},
+    {QPair<GameObjectType, GameObjectType>("Blue", "Green"), "Blue"},
+    {QPair<GameObjectType, GameObjectType>("Blue", "Blue"), "Blue"}
 };
 }
 
