@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QListWidgetItem>
 
+#include "wdg_gameobjectsettingsrow.h"
+
 namespace Ui {
 class DLG_Settings;
 }
@@ -21,6 +23,7 @@ public:
     int msBetweenLoops() const; //Seconds between auto restarted game
 
     ///Game object properties
+    QList<GameObjectSpawnSettings> spawnSettings();
 
     ///GameObject move settings
     int moveUpdateFrequencyMs() const; //How often gameobjects positions are updated

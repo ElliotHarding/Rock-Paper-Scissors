@@ -8,6 +8,13 @@ namespace Ui {
 class WDG_GameObjectSettingsRow;
 }
 
+struct GameObjectSpawnSettings
+{
+    QString type;
+    QPoint position;
+    int count;
+};
+
 class WDG_GameObjectSettingsRow : public QWidget
 {
     Q_OBJECT
@@ -15,6 +22,8 @@ class WDG_GameObjectSettingsRow : public QWidget
 public:
     explicit WDG_GameObjectSettingsRow(QListWidgetItem* pListWidgetItem);
     ~WDG_GameObjectSettingsRow();
+
+    GameObjectSpawnSettings getSettings();
 
 signals:
     void onDelete(QListWidgetItem* pListWidgetItem);

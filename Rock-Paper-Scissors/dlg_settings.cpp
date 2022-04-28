@@ -1,6 +1,5 @@
 #include "dlg_settings.h"
 #include "ui_dlg_settings.h"
-#include "wdg_gameobjectsettingsrow.h"
 
 namespace StartSettings
 {
@@ -45,6 +44,19 @@ bool DLG_Settings::loopGame()
 int DLG_Settings::msBetweenLoops() const
 {
     return ui->sb_secondsBetweenLoops->value() * 1000;
+}
+
+QList<GameObjectSpawnSettings> DLG_Settings::spawnSettings()
+{
+    QList<GameObjectSpawnSettings> gameObjectSpawnSettings;
+    const int rows = ui->listWidget_gameObjectSettings->count();
+    for(int row = 0; row < rows; row++)
+    {
+        QListWidgetItem* item = ui->listWidget_gameObjectSettings->item(row);
+        WDG_GameObjectSettingsRow* rowWidget = dynamic_cast<WDG_GameObjectSettingsRow*>(ui->listWidget_gameObjectSettings->itemWidget(item));
+        gameObjectSpawnSettings.push_back(rowWidget->getSettings());
+    }
+    return gameObjectSpawnSettings;
 }
 
 //How often gameobjects positions are updated
