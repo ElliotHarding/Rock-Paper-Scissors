@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>342</width>
+    <width>435</width>
     <height>270</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>140</x>
      <y>40</y>
-     <width>195</width>
+     <width>285</width>
      <height>221</height>
     </rect>
    </property>
@@ -26,7 +26,7 @@
   <widget class="QPushButton" name="btn_addGameObjectSettings">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>400</x>
      <y>10</y>
      <width>23</width>
      <height>23</height>
