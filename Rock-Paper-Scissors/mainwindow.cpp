@@ -9,7 +9,7 @@
 
 namespace Constants {
 
-const bool LoopGame = true;
+const int GameObjectSize = 10;
 
 const QMap<GameObjectType, int> GameObjectCount = {
     {GO_ROCK, 8},
@@ -30,15 +30,6 @@ const QMap<GameObjectType, QColor> GameObjectColor =
     {GO_SCISSORS,Qt::green}
 };
 
-const int GameObjectSize = 10;
-
-const float UpdateGameObjectsFrequency = 10;
-
-const int PercentageRandomDirection = 95;
-const int PercentageCertainRandomDirection = PercentageRandomDirection/4;
-
-const int MoveAwayFromCenterSize = 10; //Once within x blocks of center, tend to move game object away from center
-
 const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
     {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_ROCK), GO_ROCK},
     {QPair<GameObjectType, GameObjectType>(GO_ROCK, GO_PAPER), GO_PAPER},
@@ -50,8 +41,6 @@ const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResul
     {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_PAPER), GO_SCISSORS},
     {QPair<GameObjectType, GameObjectType>(GO_SCISSORS, GO_SCISSORS), GO_SCISSORS}
 };
-
-const int MsBetweenLoops = 500;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
-    m_pUpdateGameObjectsTimer->start(Constants::UpdateGameObjectsFrequency);
+    m_pUpdateGameObjectsTimer->start(m_pDlgSettings->moveUpdateFrequencyMs());
 }
 
 MainWindow::~MainWindow()
@@ -123,32 +112,34 @@ void MainWindow::reset()
 
 void MainWindow::onUpdateGameObjects()
 {
+    const int percentageRandomDirection = m_pDlgSettings->moveRandomDirectionPercentage() / 4;
+
     //Update positions
     for(GameObject* go : m_gameObjects)
     {
         int randomValue = QRandomGenerator::global()->generateDouble() * 100;
-        if(randomValue < Constants::PercentageCertainRandomDirection)
+        if(randomValue < percentageRandomDirection)
         {
             if(go->geometry().right() < geometry().right())
             {
                 go->setGeometry(go->geometry().translated(1, 0));
             }
         }
-        else if(randomValue < Constants::PercentageCertainRandomDirection * 2)
+        else if(randomValue < percentageRandomDirection * 2)
         {
             if(go->geometry().left() > 0)
             {
                 go->setGeometry(go->geometry().translated(-1, 0));
             }
         }
-        else if(randomValue < Constants::PercentageCertainRandomDirection * 3)
+        else if(randomValue < percentageRandomDirection * 3)
         {
             if(go->geometry().bottom() < geometry().bottom())
             {
                 go->setGeometry(go->geometry().translated(0, 1));
             }
         }
-        else if(randomValue < Constants::PercentageCertainRandomDirection * 4)
+        else if(randomValue < percentageRandomDirection * 4)
         {
             if(go->geometry().top() > 0)
             {
@@ -160,9 +151,11 @@ void MainWindow::onUpdateGameObjects()
             const int xToCenter = geometry().center().x() - geometry().left() - go->geometry().x();
             const int yToCenter = geometry().center().y() - geometry().top() - go->geometry().y();
 
+            const int pushFromCenterSize = m_pDlgSettings->centerPushRange();
+
             //Move towards center, unless close to it, in which case move away from center
-            if(xToCenter > Constants::MoveAwayFromCenterSize || xToCenter < -Constants::MoveAwayFromCenterSize ||
-               yToCenter > Constants::MoveAwayFromCenterSize || yToCenter < -Constants::MoveAwayFromCenterSize)
+            if(xToCenter > pushFromCenterSize || xToCenter < -pushFromCenterSize ||
+               yToCenter > pushFromCenterSize || yToCenter < -pushFromCenterSize)
             {
                 go->setGeometry(go->geometry().translated(xToCenter > 0 ? 1 : -1, yToCenter > 0 ? 1 : -1));
             }
@@ -190,12 +183,12 @@ void MainWindow::onUpdateGameObjects()
         }
     }
 
-    if(Constants::LoopGame && allSame)
+    if(m_pDlgSettings->loopGame() && allSame)
     {
         //Todo update winner
 
         m_pUpdateGameObjectsTimer->blockSignals(true);
-        QThread::msleep(Constants::MsBetweenLoops);
+        QThread::msleep(m_pDlgSettings->msBetweenLoops());
         reset();
         m_pUpdateGameObjectsTimer->blockSignals(false);
     }

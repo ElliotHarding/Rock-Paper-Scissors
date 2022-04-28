@@ -18,14 +18,13 @@ public:
 
     ///Loop settings
     bool loopGame(); //Auto restart game
-    int secondsBetweenLoops() const; //Seconds between auto restarted game
+    int msBetweenLoops() const; //Seconds between auto restarted game
 
     ///Game object properties
-    int gameObjectSize() const;
 
     ///GameObject move settings
     int moveUpdateFrequencyMs() const; //How often gameobjects positions are updated
-    int moveRandomDirectionPercentage() const; //Percentage a game object moves in a random direction versus heading towards center
+    int moveRandomDirectionPercentage() const; //Percentage chance a game object moves in a random direction versus heading towards center
     int centerPushRange() const; //Once within x blocks of center, tend to move game object away from center
 
 private slots:
@@ -35,6 +34,8 @@ private slots:
 
 private:
     Ui::DLG_Settings *ui;
+
+    void setDefaultSettings();
 };
 
 #endif // DLG_SETTINGS_H
