@@ -39,6 +39,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    void moveEvent(QMoveEvent *moveEvent);
+
 private slots:
     void onUpdateGameObjects();
 

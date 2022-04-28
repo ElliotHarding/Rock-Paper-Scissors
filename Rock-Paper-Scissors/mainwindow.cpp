@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     m_pDlgSettings = new DLG_Settings(this);
-    m_pDlgSettings->show();
+    m_pDlgSettings->show();    
 
     connect(m_pDlgSettings, SIGNAL(onClose()), this, SLOT(onClose()));
     connect(m_pDlgSettings, SIGNAL(onStart()), this, SLOT(onStart()));
@@ -69,6 +69,14 @@ MainWindow::~MainWindow()
     m_pDlgSettings = nullptr;
 
     delete ui;
+}
+
+void MainWindow::moveEvent(QMoveEvent *moveEvent)
+{
+    QMainWindow::moveEvent(moveEvent);
+
+    const QRect originalGeometry = m_pDlgSettings->geometry();
+    m_pDlgSettings->setGeometry(geometry().right(),geometry().top(),originalGeometry.width(), originalGeometry.height());
 }
 
 void MainWindow::reset()
