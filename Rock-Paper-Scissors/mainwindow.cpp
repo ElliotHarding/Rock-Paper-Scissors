@@ -11,18 +11,6 @@ namespace Constants {
 
 const int GameObjectSize = 10;
 
-const QMap<GameObjectType, int> GameObjectCount = {
-    {"Red", 8},
-    {"Green", 8},
-    {"Blue", 8}
-};
-
-const QMap<GameObjectType, QPoint> GameObjectSpawn = {
-    {"Red", QPoint(5, 5)},
-    {"Green", QPoint(175, 175)},
-    {"Blue", QPoint(5, 175)}
-};
-
 const QMap<GameObjectType, QColor> GameObjectColor =
 {
     {"Red", Qt::red},
@@ -60,11 +48,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_pDlgSettings, SIGNAL(onReset()), this, SLOT(onReset()));
     connect(m_pDlgSettings, SIGNAL(onUpdateMoveFrequency(int)), this, SLOT(onUpdateMoveFrequency(int)));
 
-    for(GameObjectType type : Constants::GameObjectSpawn.keys())
+    const QList<GameObjectSpawnSettings> spawnSettings = m_pDlgSettings->spawnSettings();
+    for(const GameObjectSpawnSettings typeSpawnSettings : spawnSettings)
     {
-        for(int i = 0; i < Constants::GameObjectCount[type]; i++)
+        for(int i = 0; i < typeSpawnSettings.count; i++)
         {
-            m_gameObjects.push_back(new GameObject(this, type, Constants::GameObjectSpawn[type]));
+            m_gameObjects.push_back(new GameObject(this, typeSpawnSettings.type, typeSpawnSettings.position));
         }
     }
 
@@ -91,17 +80,18 @@ MainWindow::~MainWindow()
 void MainWindow::reset()
 {
     int count = 0;
-    for(GameObjectType type : Constants::GameObjectSpawn.keys())
+    const QList<GameObjectSpawnSettings> spawnSettings = m_pDlgSettings->spawnSettings();
+    for(const GameObjectSpawnSettings typeSpawnSettings : spawnSettings)
     {
-        for(int i = 0; i < Constants::GameObjectCount[type]; i++)
+        for(int i = 0; i < typeSpawnSettings.count; i++)
         {
             if(count < m_gameObjects.count())
             {
-                m_gameObjects[count]->reset(type, Constants::GameObjectSpawn[type]);
+                m_gameObjects[count]->reset(typeSpawnSettings.type, typeSpawnSettings.position);
             }
             else
             {
-                m_gameObjects.push_back(new GameObject(this, type, Constants::GameObjectSpawn[type]));
+                m_gameObjects.push_back(new GameObject(this, typeSpawnSettings.type, typeSpawnSettings.position));
                 layout()->addWidget(m_gameObjects[count]);
             }
             count++;
@@ -117,6 +107,12 @@ void MainWindow::reset()
 
 void MainWindow::onUpdateGameObjects()
 {
+    if(m_gameObjects.count() == 0)
+    {
+        m_pUpdateGameObjectsTimer->stop();
+        return;
+    }
+
     const int percentageRandomDirection = m_pDlgSettings->moveRandomDirectionPercentage() / 4;
 
     //Update positions
@@ -173,7 +169,7 @@ void MainWindow::onUpdateGameObjects()
     }
 
     //Check collisions - update types - check if all the same
-    const GameObjectType firstGOT = m_gameObjects[0]->getType();//Assumes gameObjects contains something
+    const GameObjectType firstGOT = m_gameObjects[0]->getType();
     bool allSame = true;
     for(GameObject* go1 : m_gameObjects)
     {
