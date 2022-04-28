@@ -25,6 +25,7 @@ public:
     ~WDG_GameObjectSettingsRow();
 
     GameObjectSpawnSettings getSettings();
+    GameObjectType getType();
 
 signals:
     void onDelete(QListWidgetItem* pListWidgetItem);

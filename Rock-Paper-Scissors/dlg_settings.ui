@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>426</width>
-    <height>330</height>
+    <height>472</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -270,6 +270,42 @@
    </property>
    <property name="text">
     <string>Reset</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="wdg_collisionTable" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>330</y>
+     <width>391</width>
+     <height>121</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QScrollBar" name="scroll_hCollisionTable">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>450</y>
+     <width>401</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QScrollBar" name="scroll_vCollisionTable">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>329</y>
+     <width>15</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
    </property>
   </widget>
  </widget>

@@ -31,7 +31,7 @@ public:
     int centerPushRange() const; //Once within x blocks of center, tend to move game object away from center
 
 protected:
-    void closeEvent(QCloseEvent *) override;
+    void closeEvent(QCloseEvent*) override;
 
 signals:
     void onClose();
@@ -57,6 +57,8 @@ private:
     void addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings);
 
     void setDefaultSettings();
+
+    void updateCollisionTable();
 };
 
 #endif // DLG_SETTINGS_H

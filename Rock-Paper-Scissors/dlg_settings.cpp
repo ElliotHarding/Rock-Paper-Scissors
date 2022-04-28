@@ -1,5 +1,6 @@
 #include "dlg_settings.h"
 #include "ui_dlg_settings.h"
+#include <QGridLayout>
 
 namespace StartSettings
 {
@@ -22,6 +23,7 @@ DLG_Settings::DLG_Settings(QWidget *parent) :
     ui->listWidget_gameObjectSettings->setDragDropMode(QAbstractItemView::DragDropMode::NoDragDrop);
 
     setDefaultSettings();
+    updateCollisionTable();
 }
 
 DLG_Settings::~DLG_Settings()
@@ -40,6 +42,35 @@ void DLG_Settings::setDefaultSettings()
     ui->sb_updateFrequency->setValue(StartSettings::MoveUpdateFrequency);
     ui->sb_moveRandomPercentage->setValue(StartSettings::MoveRandomDirectionPercentageChance);
     ui->sb_centerPushRange->setValue(StartSettings::CenterPushRange);
+}
+
+void DLG_Settings::updateCollisionTable()
+{
+    QList<GameObjectType> types;
+
+    int layoutRow = 40;
+    int layoutCol = 40;
+    QGridLayout* layout = new QGridLayout(ui->wdg_collisionTable);
+
+    const int rows = ui->listWidget_gameObjectSettings->count();
+    for(int row = 0; row < rows; row++)
+    {
+        QListWidgetItem* item = ui->listWidget_gameObjectSettings->item(row);
+        WDG_GameObjectSettingsRow* rowWidget = dynamic_cast<WDG_GameObjectSettingsRow*>(ui->listWidget_gameObjectSettings->itemWidget(item));
+
+        //Do only for unique types
+        const GameObjectType type = rowWidget->getType();
+        if(!types.contains(type))
+        {
+            types.push_back(type);
+
+            QLabel* newRowTypeLabel = new QLabel(type);
+            layout->addWidget(newRowTypeLabel, layoutRow++, 0);
+
+            QLabel* newColTypeLbl = new QLabel(type);
+            layout->addWidget(newColTypeLbl, 0, layoutCol++);
+        }
+    }
 }
 
 //Auto restart game

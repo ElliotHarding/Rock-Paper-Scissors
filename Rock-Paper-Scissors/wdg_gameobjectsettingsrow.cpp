@@ -26,6 +26,11 @@ GameObjectSpawnSettings WDG_GameObjectSettingsRow::getSettings()
     return spawnSettings;
 }
 
+GameObjectType WDG_GameObjectSettingsRow::getType()
+{
+    return ui->cb_type->currentText();
+}
+
 void WDG_GameObjectSettingsRow::on_btn_delete_clicked()
 {
     emit onDelete(m_pListWidgetItem);
