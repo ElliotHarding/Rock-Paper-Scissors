@@ -1,11 +1,15 @@
 #include "wdg_gameobjectsettingsrow.h"
 #include "ui_wdg_gameobjectsettingsrow.h"
 
-WDG_GameObjectSettingsRow::WDG_GameObjectSettingsRow(QListWidgetItem* pListWidgetItem) :
+WDG_GameObjectSettingsRow::WDG_GameObjectSettingsRow(QListWidgetItem* pListWidgetItem, GameObjectSpawnSettings spawnSettings) :
     ui(new Ui::WDG_GameObjectSettingsRow),
     m_pListWidgetItem(pListWidgetItem)
 {
     ui->setupUi(this);
+    ui->cb_type->setCurrentText(spawnSettings.type);
+    ui->sb_spawnPosX->setValue(spawnSettings.position.x());
+    ui->sb_spawnPosY->setValue(spawnSettings.position.y());
+    ui->sb_spawnCount->setValue(spawnSettings.count);
 }
 
 WDG_GameObjectSettingsRow::~WDG_GameObjectSettingsRow()

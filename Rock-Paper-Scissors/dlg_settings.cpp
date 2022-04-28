@@ -3,6 +3,12 @@
 
 namespace StartSettings
 {
+const GameObjectSpawnSettings InitialSpawnSettingsRow1 = {"Red", QPoint(0, 0), 5};
+const GameObjectSpawnSettings InitialSpawnSettingsRow2 = {"Green", QPoint(0, 200), 5};
+const GameObjectSpawnSettings InitialSpawnSettingsRow3 = {"Blue", QPoint(200, 200), 5};
+
+const GameObjectSpawnSettings SpawnSettingsRow = {"Red", QPoint(100, 100), 5};
+
 const bool LoopGame = false;//Auto restart game
 const int AutoRestartDelay = 10;//Seconds between auto restarted game
 const int MoveUpdateFrequency = 10;//How often gameobjects positions are updated (ms)
@@ -17,7 +23,7 @@ DLG_Settings::DLG_Settings(QWidget *parent) :
     ui->setupUi(this);
     ui->listWidget_gameObjectSettings->setDragDropMode(QAbstractItemView::DragDropMode::NoDragDrop);
 
-    on_btn_addGameObjectSettings_clicked();
+    setDefaultSettings();
 }
 
 DLG_Settings::~DLG_Settings()
@@ -27,6 +33,10 @@ DLG_Settings::~DLG_Settings()
 
 void DLG_Settings::setDefaultSettings()
 {
+    addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow1);
+    addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow2);
+    addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow3);
+
     ui->cb_loopGame->setChecked(StartSettings::LoopGame);
     ui->sb_secondsBetweenLoops->setValue(StartSettings::AutoRestartDelay);
     ui->sb_updateFrequency->setValue(StartSettings::MoveUpdateFrequency);
@@ -79,8 +89,13 @@ int DLG_Settings::centerPushRange() const
 
 void DLG_Settings::on_btn_addGameObjectSettings_clicked()
 {
+    addGameObjectSettingsRow(StartSettings::SpawnSettingsRow);
+}
+
+void DLG_Settings::addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings)
+{
     QListWidgetItem* item = new QListWidgetItem();
-    WDG_GameObjectSettingsRow* itemWidget = new WDG_GameObjectSettingsRow(item);
+    WDG_GameObjectSettingsRow* itemWidget = new WDG_GameObjectSettingsRow(item, spawnSettings);
     item->setSizeHint(QSize(itemWidget->geometry().width(), itemWidget->geometry().height()));
     ui->listWidget_gameObjectSettings->addItem(item);
     ui->listWidget_gameObjectSettings->setItemWidget(item, itemWidget);

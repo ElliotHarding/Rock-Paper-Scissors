@@ -21,7 +21,7 @@ class WDG_GameObjectSettingsRow : public QWidget
     Q_OBJECT
 
 public:
-    explicit WDG_GameObjectSettingsRow(QListWidgetItem* pListWidgetItem);
+    explicit WDG_GameObjectSettingsRow(QListWidgetItem* pListWidgetItem, GameObjectSpawnSettings spawnSettings);
     ~WDG_GameObjectSettingsRow();
 
     GameObjectSpawnSettings getSettings();
