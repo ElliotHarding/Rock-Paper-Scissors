@@ -63,6 +63,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    m_pDlgSettings = new DLG_Settings(this);
+    m_pDlgSettings->show();
+
     for(GameObjectType type : Constants::GameObjectSpawn.keys())
     {
         for(int i = 0; i < Constants::GameObjectCount[type]; i++)
@@ -74,6 +77,21 @@ MainWindow::MainWindow(QWidget *parent)
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
     m_pUpdateGameObjectsTimer->start(Constants::UpdateGameObjectsFrequency);
+}
+
+MainWindow::~MainWindow()
+{
+    for(GameObject* go : m_gameObjects)
+    {
+        delete go;
+        go = nullptr;
+    }
+    m_gameObjects.clear();
+
+    //It gets deleted via QT
+    m_pDlgSettings = nullptr;
+
+    delete ui;
 }
 
 void MainWindow::reset()
@@ -101,18 +119,6 @@ void MainWindow::reset()
         delete m_gameObjects[count];
         m_gameObjects.removeAt(count);
     }
-}
-
-MainWindow::~MainWindow()
-{
-    for(GameObject* go : m_gameObjects)
-    {
-        delete go;
-        go = nullptr;
-    }
-    m_gameObjects.clear();
-
-    delete ui;
 }
 
 void MainWindow::onUpdateGameObjects()

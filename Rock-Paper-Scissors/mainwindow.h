@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTimer>
 
+#include "dlg_settings.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -51,6 +53,7 @@ private:
     void reset();
 
     Ui::MainWindow *ui;
+    DLG_Settings* m_pDlgSettings = nullptr;
 
     QTimer* m_pUpdateGameObjectsTimer;
 
