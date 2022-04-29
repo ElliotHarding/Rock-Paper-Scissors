@@ -14,6 +14,7 @@ const int GameObjectSize = 10;
 GameObject::GameObject(QWidget *parent, GameObjectType goType, const QPoint& spawnPoint) : QWidget(parent)
 {
     reset(goType, spawnPoint);
+    show();
 }
 
 void GameObject::reset(GameObjectType goType, const QPoint& spawnPoint)
