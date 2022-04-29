@@ -22,7 +22,7 @@ public:
     void setType(GameObjectType type);
     GameObjectType getType();
 
-    void checkCollided(GameObject* other);
+    void checkCollided(GameObject* other, DLG_Settings* pSettings);
 
 private:
     void paintEvent(QPaintEvent* paintEvent) override;

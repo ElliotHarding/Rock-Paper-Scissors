@@ -9,6 +9,18 @@ const GameObjectSpawnSettings InitialSpawnSettingsRow1 = {"Red", QPoint(0, 0), 5
 const GameObjectSpawnSettings InitialSpawnSettingsRow2 = {"Green", QPoint(0, 200), 5};
 const GameObjectSpawnSettings InitialSpawnSettingsRow3 = {"Blue", QPoint(200, 200), 5};
 
+const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
+    {QPair<GameObjectType, GameObjectType>("Red", "Red"), "Red"},
+    {QPair<GameObjectType, GameObjectType>("Red", "Green"), "Green"},
+    {QPair<GameObjectType, GameObjectType>("Red", "Blue"), "Red"},
+    {QPair<GameObjectType, GameObjectType>("Green", "Red"), "Green"},
+    {QPair<GameObjectType, GameObjectType>("Green", "Green"), "Green"},
+    {QPair<GameObjectType, GameObjectType>("Green", "Blue"), "Blue"},
+    {QPair<GameObjectType, GameObjectType>("Blue", "Red"), "Red"},
+    {QPair<GameObjectType, GameObjectType>("Blue", "Green"), "Blue"},
+    {QPair<GameObjectType, GameObjectType>("Blue", "Blue"), "Blue"}
+};
+
 const bool LoopGame = false;//Auto restart game
 const int AutoRestartDelay = 10;//Seconds between auto restarted game
 const int MoveUpdateFrequency = 10;//How often gameobjects positions are updated (ms)
@@ -43,6 +55,8 @@ void DLG_Settings::setDefaultSettings()
     ui->sb_updateFrequency->setValue(StartSettings::MoveUpdateFrequency);
     ui->sb_moveRandomPercentage->setValue(StartSettings::MoveRandomDirectionPercentageChance);
     ui->sb_centerPushRange->setValue(StartSettings::CenterPushRange);
+
+    m_collisionResults = StartSettings::CollisionResults;
 }
 
 void DLG_Settings::updateCollisionTable()
@@ -137,6 +151,12 @@ int DLG_Settings::moveRandomDirectionPercentage() const
 int DLG_Settings::centerPushRange() const
 {
     return ui->sb_centerPushRange->value();
+}
+
+GameObjectType DLG_Settings::collisionResult(GameObjectType go1, GameObjectType go2)
+{
+    //Should always have the qpair stored, no need to check if its in map
+    return m_collisionResults[QPair<GameObjectType, GameObjectType>(go1, go2)];
 }
 
 void DLG_Settings::closeEvent(QCloseEvent* e)

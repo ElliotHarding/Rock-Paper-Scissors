@@ -30,6 +30,9 @@ public:
     int moveRandomDirectionPercentage() const; //Percentage chance a game object moves in a random direction versus heading towards center
     int centerPushRange() const; //Once within x blocks of center, tend to move game object away from center
 
+    ///Game object collision results
+    GameObjectType collisionResult(GameObjectType go1, GameObjectType go2);
+
 protected:
     void closeEvent(QCloseEvent*) override;
 

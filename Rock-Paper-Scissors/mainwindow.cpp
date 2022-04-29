@@ -11,17 +11,6 @@ namespace Constants {
 
 const int GameObjectSize = 10;
 
-const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
-    {QPair<GameObjectType, GameObjectType>("Red", "Red"), "Red"},
-    {QPair<GameObjectType, GameObjectType>("Red", "Green"), "Green"},
-    {QPair<GameObjectType, GameObjectType>("Red", "Blue"), "Red"},
-    {QPair<GameObjectType, GameObjectType>("Green", "Red"), "Green"},
-    {QPair<GameObjectType, GameObjectType>("Green", "Green"), "Green"},
-    {QPair<GameObjectType, GameObjectType>("Green", "Blue"), "Blue"},
-    {QPair<GameObjectType, GameObjectType>("Blue", "Red"), "Red"},
-    {QPair<GameObjectType, GameObjectType>("Blue", "Green"), "Blue"},
-    {QPair<GameObjectType, GameObjectType>("Blue", "Blue"), "Blue"}
-};
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +166,7 @@ void MainWindow::onUpdateGameObjects()
     {
         for(GameObject* go2 : m_gameObjects)
         {
-            go1->checkCollided(go2);
+            go1->checkCollided(go2, m_pDlgSettings);
         }
 
         if(allSame && go1->getType() != firstGOT)
@@ -259,11 +248,11 @@ GameObjectType GameObject::getType()
     return m_type;
 }
 
-void GameObject::checkCollided(GameObject *other)
+void GameObject::checkCollided(GameObject *other, DLG_Settings* pSettings)
 {
     if(geometry().intersects(other->geometry()))
     {
-        setType(Constants::CollisionResults[QPair<GameObjectType, GameObjectType>(m_type, other->getType())]);
+        setType(pSettings->collisionResult(m_type, other->getType()));
     }
 }
 
