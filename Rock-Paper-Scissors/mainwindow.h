@@ -33,7 +33,10 @@ private slots:
     ///Other slots
     void on_sb_updateFrequency_valueChanged(int frequencyMs);
     void onDelete(QListWidgetItem* pListWidgetItem);
+    void onSpawnSettingsTypeChanged(GameObjectType type);
     void onCollisionResultChanged(QPair<GameObjectType, GameObjectType> typePair, GameObjectType goTypeResult);
+
+    void on_btn_defaultSettings_clicked();
 
 private:
     void reset();

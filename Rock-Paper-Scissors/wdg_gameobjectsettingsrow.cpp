@@ -35,3 +35,8 @@ void WDG_GameObjectSettingsRow::on_btn_delete_clicked()
 {
     emit onDelete(m_pListWidgetItem);
 }
+
+void WDG_GameObjectSettingsRow::on_cb_type_currentTextChanged(const QString& type)
+{
+    emit onUpdateType(type);
+}

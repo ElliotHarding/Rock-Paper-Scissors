@@ -29,9 +29,11 @@ public:
 
 signals:
     void onDelete(QListWidgetItem* pListWidgetItem);
+    void onUpdateType(GameObjectType type);
 
 private slots:
     void on_btn_delete_clicked();
+    void on_cb_type_currentTextChanged(const QString& type);
 
 private:
     Ui::WDG_GameObjectSettingsRow *ui;

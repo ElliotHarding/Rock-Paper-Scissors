@@ -49,8 +49,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->listWidget_gameObjectSettings->setDragDropMode(QAbstractItemView::DragDropMode::NoDragDrop);
 
+    QGridLayout* layout = new QGridLayout(ui->wdg_collisionTable);
+    ui->wdg_collisionTable->setLayout(layout);
+
     setDefaultSettings();
-    updateCollisionTableWidgets();
     reset();
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
@@ -72,6 +74,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::setDefaultSettings()
 {
+    //Remove existing spawn setting widgets
+    int row = ui->listWidget_gameObjectSettings->count();
+    while(row > 0)
+    {
+        QListWidgetItem* item = ui->listWidget_gameObjectSettings->item(--row);
+        ui->listWidget_gameObjectSettings->removeItemWidget(item);
+        delete item;
+    }
+
+    //Add default spawn setting widgets
     addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow1);
     addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow2);
     addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow3);
@@ -82,7 +94,9 @@ void MainWindow::setDefaultSettings()
     ui->sb_moveRandomPercentage->setValue(StartSettings::MoveRandomDirectionPercentageChance);
     ui->sb_centerPushRange->setValue(StartSettings::CenterPushRange);
 
+    //Set default collision results
     m_collisionResults = StartSettings::CollisionResults;
+    updateCollisionTableWidgets();
 }
 
 void MainWindow::reset()
@@ -126,18 +140,23 @@ void MainWindow::addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings)
     ui->listWidget_gameObjectSettings->setItemWidget(item, itemWidget);
 
     connect(itemWidget, SIGNAL(onDelete(QListWidgetItem*)), this, SLOT(onDelete(QListWidgetItem*)));
+    connect(itemWidget, SIGNAL(onUpdateType(GameObjectType)), this, SLOT(onSpawnSettingsTypeChanged(GameObjectType)));
+
+    onSpawnSettingsTypeChanged(spawnSettings.type);
 
     item = nullptr;
     itemWidget = nullptr;
 }
 
 void MainWindow::updateCollisionTableWidgets()
-{
+{  
+    qDeleteAll(ui->wdg_collisionTable->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
+    qDeleteAll(ui->wdg_collisionTable->layout()->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
+
     //To be filled with unique game object types
     QList<GameObjectType> types;
 
     //Layout for collision table widget
-    QGridLayout* layout = new QGridLayout(ui->wdg_collisionTable);
     int layoutRow = 1; //Inc for every new row & coloumn
     int layoutCol = 1;
 
@@ -156,10 +175,10 @@ void MainWindow::updateCollisionTableWidgets()
             types.push_back(type);
 
             QLabel* newRowTypeLabel = new QLabel(type);
-            layout->addWidget(newRowTypeLabel, layoutRow++, 0);
+            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(newRowTypeLabel, layoutRow++, 0);
 
             QLabel* newColTypeLbl = new QLabel(type);
-            layout->addWidget(newColTypeLbl, 0, layoutCol++);
+            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(newColTypeLbl, 0, layoutCol++);
         }
     }
 
@@ -187,11 +206,9 @@ void MainWindow::updateCollisionTableWidgets()
 
             connect(resultsCombo, SIGNAL(onChanged(QPair<GameObjectType, GameObjectType>, GameObjectType)), this, SLOT(onCollisionResultChanged(QPair<GameObjectType, GameObjectType>, GameObjectType)));
 
-            layout->addWidget(resultsCombo, type1+1, type2+1);
+            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(resultsCombo, type1+1, type2+1);
         }
     }
-
-    ui->wdg_collisionTable->setLayout(layout);
 }
 
 void MainWindow::onUpdateGameObjects()
@@ -321,6 +338,13 @@ void MainWindow::onDelete(QListWidgetItem* pListWidgetItem)
 {
     ui->listWidget_gameObjectSettings->removeItemWidget(pListWidgetItem);
     delete pListWidgetItem;
+
+    updateCollisionTableWidgets();
+}
+
+void MainWindow::onSpawnSettingsTypeChanged(GameObjectType)
+{
+    updateCollisionTableWidgets();
 }
 
 void MainWindow::onCollisionResultChanged(QPair<GameObjectType, GameObjectType> typePair, GameObjectType goTypeResult)
@@ -328,3 +352,8 @@ void MainWindow::onCollisionResultChanged(QPair<GameObjectType, GameObjectType> 
     m_collisionResults[typePair] = goTypeResult;
 }
 
+
+void MainWindow::on_btn_defaultSettings_clicked()
+{
+    setDefaultSettings();
+}
