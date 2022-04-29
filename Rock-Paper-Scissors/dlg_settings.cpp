@@ -52,10 +52,10 @@ void DLG_Settings::updateCollisionTable()
     int layoutRow = 1;
     int layoutCol = 1;
     QGridLayout* layout = new QGridLayout(ui->wdg_collisionTable);
-    const int rows = ui->listWidget_gameObjectSettings->count();
-    for(int row = 0; row < rows; row++)
+
+    for(int settingsWidgetRow = 0; settingsWidgetRow < ui->listWidget_gameObjectSettings->count(); settingsWidgetRow++)
     {
-        QListWidgetItem* item = ui->listWidget_gameObjectSettings->item(row);
+        QListWidgetItem* item = ui->listWidget_gameObjectSettings->item(settingsWidgetRow);
         WDG_GameObjectSettingsRow* rowWidget = dynamic_cast<WDG_GameObjectSettingsRow*>(ui->listWidget_gameObjectSettings->itemWidget(item));
 
         //Do only for unique types
