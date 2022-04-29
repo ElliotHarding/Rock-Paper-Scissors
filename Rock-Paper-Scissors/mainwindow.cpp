@@ -12,6 +12,8 @@ namespace Constants {
 
 const int GameObjectSize = 10;
 
+const int CenterPlayFeild = 100;
+
 }
 
 namespace StartSettings
@@ -226,8 +228,8 @@ void MainWindow::onUpdateGameObjects()
         }
         else
         {
-            const int xToCenter = geometry().center().x() - geometry().left() - go->geometry().x();
-            const int yToCenter = geometry().center().y() - geometry().top() - go->geometry().y();
+            const int xToCenter = Constants::CenterPlayFeild - go->geometry().x();
+            const int yToCenter = Constants::CenterPlayFeild - go->geometry().y();
 
             const int pushFromCenterSize = ui->sb_centerPushRange->value();
 
