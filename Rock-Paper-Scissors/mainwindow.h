@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 
-#include "dlg_settings.h"
+#include "wdg_gameobjectsettingsrow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,7 +22,7 @@ public:
     void setType(GameObjectType type);
     GameObjectType getType();
 
-    void checkCollided(GameObject* other, DLG_Settings* pSettings);
+    void checkCollided(GameObject* other, QMap<QPair<GameObjectType, GameObjectType>, GameObjectType>& collisionResults);
 
 private:
     void paintEvent(QPaintEvent* paintEvent) override;
@@ -39,26 +39,35 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-protected:
-    void moveEvent(QMoveEvent *moveEvent);
-
 private slots:
+    ///Game loop slot
     void onUpdateGameObjects();
 
-    void onClose();
-    void onStart();
-    void onStop();
-    void onReset();
-    void onUpdateMoveFrequency(int frequencyMs);
+    ///Button slots
+    void on_btn_start_clicked();
+    void on_btn_stop_clicked();
+    void on_btn_reset_clicked();
+    void on_btn_addGameObjectSettings_clicked();
+
+    ///Other slots
+    void on_sb_updateFrequency_valueChanged(int frequencyMs);
+    void onDelete(QListWidgetItem* pListWidgetItem);
 
 private:
     void reset();
+    void setDefaultSettings();
 
     Ui::MainWindow *ui;
-    DLG_Settings* m_pDlgSettings = nullptr;
 
     QTimer* m_pUpdateGameObjectsTimer;
 
     QList<GameObject*> m_gameObjects;
+
+    void addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings);
+
+
+
+    void updateCollisionTable();
+    QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> m_collisionResults;
 };
 #endif // MAINWINDOW_H
