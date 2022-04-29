@@ -6,7 +6,6 @@
 #include <QRandomGenerator>
 #include <QThread>
 #include <QLayout>
-#include <QComboBox>
 
 namespace Constants {
 
@@ -52,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listWidget_gameObjectSettings->setDragDropMode(QAbstractItemView::DragDropMode::NoDragDrop);
 
     setDefaultSettings();
-    updateCollisionTable();
+    updateCollisionTableWidgets();
     reset();
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
@@ -180,63 +179,14 @@ void MainWindow::updateCollisionTableWidgets()
                 m_collisionResults[typePair] = types[type1];
             }
 
-            QComboBox* resultsCombo = new QComboBox();
+            CollisionCombobox* resultsCombo = new CollisionCombobox(typePair);
             for(GameObjectType got : types)
             {
                 resultsCombo->addItem(got);
             }
             resultsCombo->setCurrentText(m_collisionResults[typePair]);
 
-            layout->addWidget(resultsCombo, type1+1, type2+1);
-        }
-    }
-
-    ui->wdg_collisionTable->setLayout(layout);
-}
-
-void MainWindow::updateCollisionTable()
-{
-    QList<GameObjectType> types;
-
-    int layoutRow = 1;
-    int layoutCol = 1;
-    QGridLayout* layout = new QGridLayout(ui->wdg_collisionTable);
-
-    for(int settingsWidgetRow = 0; settingsWidgetRow < ui->listWidget_gameObjectSettings->count(); settingsWidgetRow++)
-    {
-        QListWidgetItem* item = ui->listWidget_gameObjectSettings->item(settingsWidgetRow);
-        WDG_GameObjectSettingsRow* rowWidget = dynamic_cast<WDG_GameObjectSettingsRow*>(ui->listWidget_gameObjectSettings->itemWidget(item));
-
-        //Do only for unique types
-        const GameObjectType type = rowWidget->getType();
-        if(!types.contains(type))
-        {
-            types.push_back(type);
-
-            QLabel* newRowTypeLabel = new QLabel(type);
-            layout->addWidget(newRowTypeLabel, layoutRow++, 0);
-
-            QLabel* newColTypeLbl = new QLabel(type);
-            layout->addWidget(newColTypeLbl, 0, layoutCol++);
-        }
-    }
-
-    for(int type1 = 0; type1 < types.count(); type1++)
-    {
-        for(int type2 = 0; type2 < types.count(); type2++)
-        {
-            const QPair<GameObjectType, GameObjectType> typePair(types[type1], types[type2]);
-            if(m_collisionResults.find(typePair) == m_collisionResults.end())
-            {
-                m_collisionResults[typePair] = types[type1];
-            }
-
-            QComboBox* resultsCombo = new QComboBox();
-            resultsCombo->addItem(m_collisionResults[typePair]);
-            if(type1 != type2)
-            {
-                resultsCombo->addItem(m_collisionResults[typePair] == types[type1] ? types[type2] : types[type1]);
-            }
+            connect(resultsCombo, SIGNAL(onChanged(QPair<GameObjectType, GameObjectType>, GameObjectType)), this, SLOT(onCollisionResultChanged(QPair<GameObjectType, GameObjectType>, GameObjectType)));
 
             layout->addWidget(resultsCombo, type1+1, type2+1);
         }
@@ -374,6 +324,11 @@ void MainWindow::onDelete(QListWidgetItem* pListWidgetItem)
     delete pListWidgetItem;
 }
 
+void MainWindow::onCollisionResultChanged(QPair<GameObjectType, GameObjectType> typePair, GameObjectType goTypeResult)
+{
+    m_collisionResults[typePair] = goTypeResult;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///GameObject
 ///
@@ -415,4 +370,18 @@ void GameObject::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
     painter.fillRect(QRect(0,0,Constants::GameObjectSize,Constants::GameObjectSize), m_color);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///CollisionCombobox
+///
+CollisionCombobox::CollisionCombobox(QPair<GameObjectType, GameObjectType> typePair) : QComboBox(),
+    m_typePair(typePair)
+{
+    connect(this, SIGNAL(currentTextChanged(const QString&)), this, SLOT(onChangedInternal(const QString&)));
+}
+
+void CollisionCombobox::onChangedInternal(const QString& type)
+{
+    emit onChanged(m_typePair, type);
 }

@@ -3,12 +3,30 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QComboBox>
 
 #include "wdg_gameobjectsettingsrow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+class CollisionCombobox : public QComboBox
+{
+    Q_OBJECT
+
+public:
+    CollisionCombobox(QPair<GameObjectType, GameObjectType> typePair);
+
+signals:
+    void onChanged(QPair<GameObjectType, GameObjectType> typePair, GameObjectType goTypeResult);
+
+private slots:
+    void onChangedInternal(const QString& type);
+
+private:
+    QPair<GameObjectType, GameObjectType> m_typePair;
+};
 
 class GameObject : public QWidget
 {
@@ -52,6 +70,7 @@ private slots:
     ///Other slots
     void on_sb_updateFrequency_valueChanged(int frequencyMs);
     void onDelete(QListWidgetItem* pListWidgetItem);
+    void onCollisionResultChanged(QPair<GameObjectType, GameObjectType> typePair, GameObjectType goTypeResult);
 
 private:
     void reset();
@@ -67,7 +86,6 @@ private:
 
 
     void updateCollisionTableWidgets();
-    void updateCollisionTable();
     QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> m_collisionResults;
 };
 #endif // MAINWINDOW_H
