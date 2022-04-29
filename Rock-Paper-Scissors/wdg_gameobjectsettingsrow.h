@@ -3,12 +3,12 @@
 
 #include <QWidget>
 #include <QListWidgetItem>
+#include "gameobjecttype.h"
 
 namespace Ui {
 class WDG_GameObjectSettingsRow;
 }
 
-typedef QString GameObjectType;
 struct GameObjectSpawnSettings
 {
     GameObjectType type;

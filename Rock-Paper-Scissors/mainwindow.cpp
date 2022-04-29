@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "collisioncombobox.h"
 
 #include <QDebug>
 #include <QPainter>
@@ -8,8 +9,6 @@
 #include <QLayout>
 
 namespace Constants {
-
-const int GameObjectSize = 10;
 
 const int CenterPlayFeild = 100;
 
@@ -329,59 +328,3 @@ void MainWindow::onCollisionResultChanged(QPair<GameObjectType, GameObjectType> 
     m_collisionResults[typePair] = goTypeResult;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///GameObject
-///
-GameObject::GameObject(QWidget *parent, GameObjectType goType, const QPoint& spawnPoint) : QWidget(parent)
-{
-    reset(goType, spawnPoint);
-}
-
-void GameObject::reset(GameObjectType goType, const QPoint& spawnPoint)
-{
-    setType(goType);
-    setGeometry(spawnPoint.x(), spawnPoint.y(), Constants::GameObjectSize, Constants::GameObjectSize);
-}
-
-void GameObject::setType(GameObjectType type)
-{
-    if(m_type != type)
-    {
-        m_type = type;
-        m_color = QColor(type);
-        repaint();
-    }
-}
-
-GameObjectType GameObject::getType()
-{
-    return m_type;
-}
-
-void GameObject::checkCollided(GameObject *other, QMap<QPair<GameObjectType, GameObjectType>, GameObjectType>& collisionResults)
-{
-    if(geometry().intersects(other->geometry()))
-    {
-        setType(collisionResults[QPair<GameObjectType, GameObjectType>(m_type, other->getType())]);
-    }
-}
-
-void GameObject::paintEvent(QPaintEvent*)
-{
-    QPainter painter(this);
-    painter.fillRect(QRect(0,0,Constants::GameObjectSize,Constants::GameObjectSize), m_color);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///CollisionCombobox
-///
-CollisionCombobox::CollisionCombobox(QPair<GameObjectType, GameObjectType> typePair) : QComboBox(),
-    m_typePair(typePair)
-{
-    connect(this, SIGNAL(currentTextChanged(const QString&)), this, SLOT(onChangedInternal(const QString&)));
-}
-
-void CollisionCombobox::onChangedInternal(const QString& type)
-{
-    emit onChanged(m_typePair, type);
-}
