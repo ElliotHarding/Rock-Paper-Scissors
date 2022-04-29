@@ -27,7 +27,6 @@ const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResul
 };
 
 const bool LoopGame = false;//Auto restart game
-const int AutoRestartDelay = 10;//Seconds between auto restarted game
 const int MoveUpdateFrequency = 10;//How often gameobjects positions are updated (ms)
 const int MoveRandomDirectionPercentageChance = 95;//Percentage chance a game object moves in a random direction versus heading towards center
 const int CenterPushRange = 10;//Once within x blocks of center, tend to move game object away from center
@@ -94,7 +93,6 @@ void MainWindow::setDefaultSettings()
     addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow3);
 
     ui->cb_loopGame->setChecked(StartSettings::LoopGame);
-    ui->sb_secondsBetweenLoops->setValue(StartSettings::AutoRestartDelay);
     ui->sb_updateFrequency->setValue(StartSettings::MoveUpdateFrequency);
     ui->sb_moveRandomPercentage->setValue(StartSettings::MoveRandomDirectionPercentageChance);
     ui->sb_centerPushRange->setValue(StartSettings::CenterPushRange);
@@ -302,7 +300,6 @@ void MainWindow::onUpdateGameObjects()
 
         if(ui->cb_loopGame->isChecked())
         {
-            //QThread::msleep(ui->sb_secondsBetweenLoops->value() * 1000);
             reset();
             m_pUpdateGameObjectsTimer->start(ui->sb_updateFrequency->value());
         }
