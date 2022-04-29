@@ -121,7 +121,7 @@ void MainWindow::reset()
             else
             {
                 m_gameObjects.push_back(new GameObject(m_pDlgGameFeild, spawnSettings.type, spawnSettings.position));
-                layout()->addWidget(m_gameObjects[count]);
+                m_pDlgGameFeild->layout()->addWidget(m_gameObjects[count]);
             }
             count++;
         }
