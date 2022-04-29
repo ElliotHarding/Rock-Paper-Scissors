@@ -1,7 +1,7 @@
 #include "dlg_gamefeild.h"
 #include "ui_dlg_gamefeild.h"
 
-#include <QHBoxLayout>
+#include <QGridLayout>
 
 DLG_GameFeild::DLG_GameFeild(QWidget *parent) :
     QDialog(parent),
@@ -9,7 +9,7 @@ DLG_GameFeild::DLG_GameFeild(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QHBoxLayout* layout = new QHBoxLayout(this);
+    QGridLayout* layout = new QGridLayout(this);
     setLayout(layout);
 }
 
