@@ -1,6 +1,7 @@
 #include "dlg_settings.h"
 #include "ui_dlg_settings.h"
 #include <QGridLayout>
+#include <QComboBox>
 
 namespace StartSettings
 {
@@ -68,6 +69,27 @@ void DLG_Settings::updateCollisionTable()
 
             QLabel* newColTypeLbl = new QLabel(type);
             layout->addWidget(newColTypeLbl, 0, layoutCol++);
+        }
+    }
+
+    for(int type1 = 0; type1 < types.count(); type1++)
+    {
+        for(int type2 = 0; type2 < types.count(); type2++)
+        {
+            const QPair<GameObjectType, GameObjectType> typePair(types[type1], types[type2]);
+            if(m_collisionResults.find(typePair) == m_collisionResults.end())
+            {
+                m_collisionResults[typePair] = types[type1];
+            }
+
+            QComboBox* resultsCombo = new QComboBox();
+            resultsCombo->addItem(m_collisionResults[typePair]);
+            if(type1 != type2)
+            {
+                resultsCombo->addItem(m_collisionResults[typePair] == types[type1] ? types[type2] : types[type1]);
+            }
+
+            layout->addWidget(resultsCombo, type1+1, type2+1);
         }
     }
 

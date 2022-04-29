@@ -59,6 +59,7 @@ private:
     void setDefaultSettings();
 
     void updateCollisionTable();
+    QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> m_collisionResults;
 };
 
 #endif // DLG_SETTINGS_H
