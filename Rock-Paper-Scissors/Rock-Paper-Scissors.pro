@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     collisioncombobox.cpp \
+    dlg_gamefeild.cpp \
     gameobject.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -17,12 +18,14 @@ SOURCES += \
 
 HEADERS += \
     collisioncombobox.h \
+    dlg_gamefeild.h \
     gameobject.h \
     gameobjecttype.h \
     mainwindow.h \
     wdg_gameobjectsettingsrow.h
 
 FORMS += \
+    dlg_gamefeild.ui \
     mainwindow.ui \
     wdg_gameobjectsettingsrow.ui
 

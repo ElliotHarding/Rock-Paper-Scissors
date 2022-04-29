@@ -139,7 +139,7 @@ void MainWindow::addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings)
     ui->listWidget_gameObjectSettings->addItem(item);
     ui->listWidget_gameObjectSettings->setItemWidget(item, itemWidget);
 
-    connect(itemWidget, SIGNAL(onDelete(QListWidgetItem*)), this, SLOT(onDelete(QListWidgetItem*)));
+    connect(itemWidget, SIGNAL(onDelete(QListWidgetItem*)), this, SLOT(onSpawnSettingsDelete(QListWidgetItem*)));
     connect(itemWidget, SIGNAL(onUpdateType(GameObjectType)), this, SLOT(onSpawnSettingsTypeChanged(GameObjectType)));
 
     onSpawnSettingsTypeChanged(spawnSettings.type);
@@ -325,6 +325,11 @@ void MainWindow::on_btn_addGameObjectSettings_clicked()
     addGameObjectSettingsRow(StartSettings::InitialSpawnSettingsRow1);
 }
 
+void MainWindow::on_btn_defaultSettings_clicked()
+{
+    setDefaultSettings();
+}
+
 void MainWindow::on_sb_updateFrequency_valueChanged(int frequencyMs)
 {
     if(m_pUpdateGameObjectsTimer->isActive())
@@ -334,7 +339,7 @@ void MainWindow::on_sb_updateFrequency_valueChanged(int frequencyMs)
     m_pUpdateGameObjectsTimer->start(frequencyMs);
 }
 
-void MainWindow::onDelete(QListWidgetItem* pListWidgetItem)
+void MainWindow::onSpawnSettingsDelete(QListWidgetItem* pListWidgetItem)
 {
     ui->listWidget_gameObjectSettings->removeItemWidget(pListWidgetItem);
     delete pListWidgetItem;
@@ -353,7 +358,4 @@ void MainWindow::onCollisionResultChanged(QPair<GameObjectType, GameObjectType> 
 }
 
 
-void MainWindow::on_btn_defaultSettings_clicked()
-{
-    setDefaultSettings();
-}
+

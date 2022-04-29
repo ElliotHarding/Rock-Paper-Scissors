@@ -7,6 +7,7 @@
 
 #include "wdg_gameobjectsettingsrow.h"
 #include "gameobject.h"
+#include "dlg_gamefeild.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,14 +30,15 @@ private slots:
     void on_btn_stop_clicked();
     void on_btn_reset_clicked();
     void on_btn_addGameObjectSettings_clicked();
+    void on_btn_defaultSettings_clicked();
+
+    ///Spawn settings row slots
+    void onSpawnSettingsDelete(QListWidgetItem* pListWidgetItem);
+    void onSpawnSettingsTypeChanged(GameObjectType type);
 
     ///Other slots
     void on_sb_updateFrequency_valueChanged(int frequencyMs);
-    void onDelete(QListWidgetItem* pListWidgetItem);
-    void onSpawnSettingsTypeChanged(GameObjectType type);
     void onCollisionResultChanged(QPair<GameObjectType, GameObjectType> typePair, GameObjectType goTypeResult);
-
-    void on_btn_defaultSettings_clicked();
 
 private:
     void reset();
