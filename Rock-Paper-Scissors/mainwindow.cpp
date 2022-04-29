@@ -8,12 +8,6 @@
 #include <QThread>
 #include <QLayout>
 
-namespace Constants {
-
-const int CenterPlayFeild = 100;
-
-}
-
 namespace StartSettings
 {
 const GameObjectSpawnSettings InitialSpawnSettingsRow1 = {"Red", QPoint(0, 0), 5};
@@ -73,6 +67,14 @@ MainWindow::~MainWindow()
     m_gameObjects.clear();
 
     delete ui;
+}
+
+void MainWindow::moveEvent(QMoveEvent *moveEvent)
+{
+    QMainWindow::moveEvent(moveEvent);
+
+    const QRect originalGeometry = m_pDlgGameFeild->geometry();
+    m_pDlgGameFeild->setGeometry(geometry().right(),geometry().top(),originalGeometry.width(), originalGeometry.height());
 }
 
 void MainWindow::setDefaultSettings()
@@ -257,8 +259,8 @@ void MainWindow::onUpdateGameObjects()
         }
         else
         {
-            const int xToCenter = Constants::CenterPlayFeild - go->geometry().x();
-            const int yToCenter = Constants::CenterPlayFeild - go->geometry().y();
+            const int xToCenter = ui->sb_gameSizeX->value()/2 - go->geometry().x();
+            const int yToCenter = ui->sb_gameSizeY->value()/2- go->geometry().y();
 
             const int pushFromCenterSize = ui->sb_centerPushRange->value();
 
@@ -359,5 +361,12 @@ void MainWindow::onCollisionResultChanged(QPair<GameObjectType, GameObjectType> 
     m_collisionResults[typePair] = goTypeResult;
 }
 
+void MainWindow::on_sb_gameSizeX_valueChanged(int width)
+{
+    m_pDlgGameFeild->resize(width, ui->sb_gameSizeY->value());
+}
 
-
+void MainWindow::on_sb_gameSizeY_valueChanged(int height)
+{
+    m_pDlgGameFeild->resize(ui->sb_gameSizeX->value(), height);
+}

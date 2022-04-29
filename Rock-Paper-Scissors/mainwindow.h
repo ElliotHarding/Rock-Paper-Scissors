@@ -21,6 +21,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    void moveEvent(QMoveEvent *moveEvent);
+
 private slots:
     ///Game loop slot
     void onUpdateGameObjects();
@@ -39,6 +42,8 @@ private slots:
     ///Other slots
     void on_sb_updateFrequency_valueChanged(int frequencyMs);
     void onCollisionResultChanged(QPair<GameObjectType, GameObjectType> typePair, GameObjectType goTypeResult);
+    void on_sb_gameSizeX_valueChanged(int width);
+    void on_sb_gameSizeY_valueChanged(int height);
 
 private:
     ///Reset and default params
