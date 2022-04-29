@@ -41,19 +41,22 @@ private slots:
     void onCollisionResultChanged(QPair<GameObjectType, GameObjectType> typePair, GameObjectType goTypeResult);
 
 private:
+    ///Reset and default params
     void reset();
     void setDefaultSettings();
 
+    ///Collision table
+    void updateCollisionTableWidgets();
+    QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> m_collisionResults;
+
+    ///UI
     Ui::MainWindow *ui;
+    DLG_GameFeild* m_pDlgGameFeild = nullptr;
 
     QTimer* m_pUpdateGameObjectsTimer;
 
     QList<GameObject*> m_gameObjects;
 
     void addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings);
-
-
-    void updateCollisionTableWidgets();
-    QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> m_collisionResults;
 };
 #endif // MAINWINDOW_H

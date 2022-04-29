@@ -49,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->listWidget_gameObjectSettings->setDragDropMode(QAbstractItemView::DragDropMode::NoDragDrop);
 
+    m_pDlgGameFeild = new DLG_GameFeild(this);
+    m_pDlgGameFeild->show();
+
     QGridLayout* layout = new QGridLayout(ui->wdg_collisionTable);
     ui->wdg_collisionTable->setLayout(layout);
 
@@ -117,7 +120,7 @@ void MainWindow::reset()
             }
             else
             {
-                m_gameObjects.push_back(new GameObject(this, spawnSettings.type, spawnSettings.position));
+                m_gameObjects.push_back(new GameObject(m_pDlgGameFeild, spawnSettings.type, spawnSettings.position));
                 layout()->addWidget(m_gameObjects[count]);
             }
             count++;
