@@ -219,7 +219,7 @@ void MainWindow::updateCollisionTableWidgets()
         }
     }
 }
-
+#include <cmath>        // std::abs
 void MainWindow::onUpdateGameObjects()
 {
     if(m_gameObjects.count() == 0)
@@ -265,22 +265,54 @@ void MainWindow::onUpdateGameObjects()
         }
         else
         {
-            const int xToCenter = ui->sb_gameSizeX->value()/2 - go->geometry().x();
-            const int yToCenter = ui->sb_gameSizeY->value()/2- go->geometry().y();
-
-            const int pushFromCenterSize = ui->sb_centerPushRange->value();
-
-            //Move towards center, unless close to it, in which case move away from center
-            if(xToCenter > pushFromCenterSize || xToCenter < -pushFromCenterSize ||
-               yToCenter > pushFromCenterSize || yToCenter < -pushFromCenterSize)
+            if(ui->cb_hunterAlgorithm->isChecked())
             {
-                go->setGeometry(go->geometry().translated(xToCenter > 0 ? speed : -speed, yToCenter > 0 ? speed : -speed));
+                bool foundTarget = false;
+                QPoint vectorToTarget(9999, 9999);
+                for(GameObject* otherGo : m_gameObjects)
+                {
+                    //Check if a target
+                    if(go->getType() != otherGo->getType() && m_collisionResults[QPair<GameObjectType, GameObjectType>(go->getType(), otherGo->getType())] == go->getType())
+                    {
+                        foundTarget = true;
+
+                        int xDiff = otherGo->geometry().x() - go->geometry().x();
+                        int yDiff = otherGo->geometry().y() - go->geometry().y();
+
+                        if(std::abs(xDiff) < std::abs(vectorToTarget.x()))
+                        {
+                            vectorToTarget.setX(xDiff);
+                        }
+                        if(std::abs(yDiff) < std::abs(vectorToTarget.y()))
+                        {
+                            vectorToTarget.setY(yDiff);
+                        }
+                    }
+                }
+
+                if(foundTarget)
+                {
+                    go->setGeometry(go->geometry().translated(vectorToTarget.x() > 0 ? speed : -speed, vectorToTarget.y() > 0 ? speed : -speed));
+                }
             }
             else
             {
-                go->setGeometry(go->geometry().translated(xToCenter > 0 ? -speed : speed, yToCenter > 0 ? -speed : speed));
-            }
+                const int xToCenter = ui->sb_gameSizeX->value()/2 - go->geometry().x();
+                const int yToCenter = ui->sb_gameSizeY->value()/2- go->geometry().y();
 
+                const int pushFromCenterSize = ui->sb_centerPushRange->value();
+
+                //Move towards center, unless close to it, in which case move away from center
+                if(xToCenter > pushFromCenterSize || xToCenter < -pushFromCenterSize ||
+                   yToCenter > pushFromCenterSize || yToCenter < -pushFromCenterSize)
+                {
+                    go->setGeometry(go->geometry().translated(xToCenter > 0 ? speed : -speed, yToCenter > 0 ? speed : -speed));
+                }
+                else
+                {
+                    go->setGeometry(go->geometry().translated(xToCenter > 0 ? -speed : speed, yToCenter > 0 ? -speed : speed));
+                }
+            }
         }
     }
 
