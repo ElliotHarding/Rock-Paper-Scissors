@@ -10,9 +10,9 @@
 
 namespace StartSettings
 {
-const GameObjectSpawnSettings InitialSpawnSettingsRow1 = {"Red", QPoint(0, 0), 5};
-const GameObjectSpawnSettings InitialSpawnSettingsRow2 = {"Green", QPoint(0, 200), 5};
-const GameObjectSpawnSettings InitialSpawnSettingsRow3 = {"Blue", QPoint(200, 200), 5};
+const GameObjectSpawnSettings InitialSpawnSettingsRow1 = {"Red", QPoint(200, 50), 5};
+const GameObjectSpawnSettings InitialSpawnSettingsRow2 = {"Green", QPoint(50, 350), 5};
+const GameObjectSpawnSettings InitialSpawnSettingsRow3 = {"Blue", QPoint(350, 350), 5};
 
 const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResults = {
     {QPair<GameObjectType, GameObjectType>("Red", "Red"), "Red"},
@@ -30,6 +30,8 @@ const bool LoopGame = false;//Auto restart game
 const int MoveUpdateFrequency = 10;//How often gameobjects positions are updated (ms)
 const int MoveRandomDirectionPercentageChance = 95;//Percentage chance a game object moves in a random direction versus heading towards center
 const int CenterPushRange = 10;//Once within x blocks of center, tend to move game object away from center
+const int GameWidth = 400;
+const int GameHeight = 400;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +98,9 @@ void MainWindow::setDefaultSettings()
     ui->sb_updateFrequency->setValue(StartSettings::MoveUpdateFrequency);
     ui->sb_moveRandomPercentage->setValue(StartSettings::MoveRandomDirectionPercentageChance);
     ui->sb_centerPushRange->setValue(StartSettings::CenterPushRange);
+    ui->sb_gameSizeX->setValue(StartSettings::GameWidth);
+    ui->sb_gameSizeY->setValue(StartSettings::GameHeight);
+    m_pDlgGameFeild->resize(StartSettings::GameWidth, StartSettings::GameHeight);
 
     //Set default collision results
     m_collisionResults = StartSettings::CollisionResults;

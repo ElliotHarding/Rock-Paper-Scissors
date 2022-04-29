@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>706</width>
-    <height>510</height>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,9 +31,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>210</y>
+      <y>200</y>
       <width>401</width>
-      <height>251</height>
+      <height>231</height>
      </rect>
     </property>
    </widget>
@@ -82,7 +82,7 @@
       <x>420</x>
       <y>60</y>
       <width>276</width>
-      <height>401</height>
+      <height>371</height>
      </rect>
     </property>
    </widget>
@@ -90,7 +90,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>110</y>
+      <y>100</y>
       <width>131</width>
       <height>16</height>
      </rect>
@@ -103,7 +103,7 @@
     <property name="geometry">
      <rect>
       <x>157</x>
-      <y>130</y>
+      <y>120</y>
       <width>41</width>
       <height>22</height>
      </rect>
@@ -132,7 +132,7 @@
     <property name="geometry">
      <rect>
       <x>157</x>
-      <y>110</y>
+      <y>100</y>
       <width>91</width>
       <height>16</height>
      </rect>
@@ -184,7 +184,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>110</y>
+      <y>100</y>
       <width>131</width>
       <height>16</height>
      </rect>
@@ -197,7 +197,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>130</y>
+      <y>120</y>
       <width>41</width>
       <height>22</height>
      </rect>
@@ -213,7 +213,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>130</y>
+      <y>120</y>
       <width>41</width>
       <height>22</height>
      </rect>
@@ -347,7 +347,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>190</y>
+      <y>180</y>
       <width>121</width>
       <height>16</height>
      </rect>
@@ -370,17 +370,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>706</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
