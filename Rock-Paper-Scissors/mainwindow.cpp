@@ -133,6 +133,67 @@ void MainWindow::addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings)
     itemWidget = nullptr;
 }
 
+void MainWindow::updateCollisionTableWidgets()
+{
+    //To be filled with unique game object types
+    QList<GameObjectType> types;
+
+    //Layout for collision table widget
+    QGridLayout* layout = new QGridLayout(ui->wdg_collisionTable);
+    int layoutRow = 1; //Inc for every new row & coloumn
+    int layoutCol = 1;
+
+    //Loop through all game object settings widgets
+    // - For each unique game object type create a table index of that type for
+    //   both column and row
+    for(int settingsWidgetRow = 0; settingsWidgetRow < ui->listWidget_gameObjectSettings->count(); settingsWidgetRow++)
+    {
+        QListWidgetItem* item = ui->listWidget_gameObjectSettings->item(settingsWidgetRow);
+        WDG_GameObjectSettingsRow* rowWidget = dynamic_cast<WDG_GameObjectSettingsRow*>(ui->listWidget_gameObjectSettings->itemWidget(item));
+
+        //Do only for unique types
+        const GameObjectType type = rowWidget->getType();
+        if(!types.contains(type))
+        {
+            types.push_back(type);
+
+            QLabel* newRowTypeLabel = new QLabel(type);
+            layout->addWidget(newRowTypeLabel, layoutRow++, 0);
+
+            QLabel* newColTypeLbl = new QLabel(type);
+            layout->addWidget(newColTypeLbl, 0, layoutCol++);
+        }
+    }
+
+    //Loop through all the combinations of game object types
+    // - Create a combobox for each combination
+    // - Fill combobox with list of all game object types
+    // - If result is already saved use that as current text for combobox.
+    //   Otherwise set to type1
+    for(int type1 = 0; type1 < types.count(); type1++)
+    {
+        for(int type2 = 0; type2 < types.count(); type2++)
+        {
+            const QPair<GameObjectType, GameObjectType> typePair(types[type1], types[type2]);
+            if(m_collisionResults.find(typePair) == m_collisionResults.end())
+            {
+                m_collisionResults[typePair] = types[type1];
+            }
+
+            QComboBox* resultsCombo = new QComboBox();
+            for(GameObjectType got : types)
+            {
+                resultsCombo->addItem(got);
+            }
+            resultsCombo->setCurrentText(m_collisionResults[typePair]);
+
+            layout->addWidget(resultsCombo, type1+1, type2+1);
+        }
+    }
+
+    ui->wdg_collisionTable->setLayout(layout);
+}
+
 void MainWindow::updateCollisionTable()
 {
     QList<GameObjectType> types;

@@ -66,7 +66,7 @@ private:
     void addGameObjectSettingsRow(GameObjectSpawnSettings spawnSettings);
 
 
-
+    void updateCollisionTableWidgets();
     void updateCollisionTable();
     QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> m_collisionResults;
 };
