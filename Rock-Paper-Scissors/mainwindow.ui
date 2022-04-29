@@ -91,18 +91,18 @@
      <rect>
       <x>10</x>
       <y>100</y>
-      <width>131</width>
+      <width>61</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Move Update Frequency</string>
+     <string>Tick Speed</string>
     </property>
    </widget>
    <widget class="QSpinBox" name="sb_moveRandomPercentage">
     <property name="geometry">
      <rect>
-      <x>157</x>
+      <x>210</x>
       <y>120</y>
       <width>41</width>
       <height>22</height>
@@ -131,7 +131,7 @@
    <widget class="QLabel" name="lbl_moveRandomPercentage">
     <property name="geometry">
      <rect>
-      <x>157</x>
+      <x>210</x>
       <y>100</y>
       <width>91</width>
       <height>16</height>
@@ -183,9 +183,9 @@
    <widget class="QLabel" name="lbl_centerPushRange">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>310</x>
       <y>100</y>
-      <width>131</width>
+      <width>101</width>
       <height>16</height>
      </rect>
     </property>
@@ -196,7 +196,7 @@
    <widget class="QSpinBox" name="sb_centerPushRange">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>310</x>
       <y>120</y>
       <width>41</width>
       <height>22</height>
@@ -367,6 +367,51 @@
     </property>
     <property name="text">
      <string>Game Size</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_objectSpeed">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>100</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Object Speed</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="sb_gameObjectSpeed">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>120</y>
+      <width>41</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>50</number>
+    </property>
+    <property name="value">
+     <number>2</number>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="cb_hunterAlgorithm">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>60</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hunter Algorithm</string>
     </property>
    </widget>
   </widget>

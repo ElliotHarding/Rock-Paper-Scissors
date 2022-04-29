@@ -30,6 +30,7 @@ const bool LoopGame = false;//Auto restart game
 const int MoveUpdateFrequency = 10;//How often gameobjects positions are updated (ms)
 const int MoveRandomDirectionPercentageChance = 95;//Percentage chance a game object moves in a random direction versus heading towards center
 const int CenterPushRange = 10;//Once within x blocks of center, tend to move game object away from center
+const int GameObjectSpeed = 2;
 const int GameWidth = 400;
 const int GameHeight = 400;
 }
@@ -98,6 +99,7 @@ void MainWindow::setDefaultSettings()
     ui->sb_updateFrequency->setValue(StartSettings::MoveUpdateFrequency);
     ui->sb_moveRandomPercentage->setValue(StartSettings::MoveRandomDirectionPercentageChance);
     ui->sb_centerPushRange->setValue(StartSettings::CenterPushRange);
+    ui->sb_gameObjectSpeed->setValue(StartSettings::GameObjectSpeed);
     ui->sb_gameSizeX->setValue(StartSettings::GameWidth);
     ui->sb_gameSizeY->setValue(StartSettings::GameHeight);
     m_pDlgGameFeild->resize(StartSettings::GameWidth, StartSettings::GameHeight);
@@ -227,6 +229,7 @@ void MainWindow::onUpdateGameObjects()
     }
 
     const int percentageRandomDirection = ui->sb_moveRandomPercentage->value() / 4;
+    const int speed = ui->sb_gameObjectSpeed->value();
 
     //Update positions
     for(GameObject* go : m_gameObjects)
@@ -236,28 +239,28 @@ void MainWindow::onUpdateGameObjects()
         {
             if(go->geometry().right() < geometry().right())
             {
-                go->setGeometry(go->geometry().translated(1, 0));
+                go->setGeometry(go->geometry().translated(speed, 0));
             }
         }
         else if(randomValue < percentageRandomDirection * 2)
         {
             if(go->geometry().left() > 0)
             {
-                go->setGeometry(go->geometry().translated(-1, 0));
+                go->setGeometry(go->geometry().translated(-speed, 0));
             }
         }
         else if(randomValue < percentageRandomDirection * 3)
         {
             if(go->geometry().bottom() < geometry().bottom())
             {
-                go->setGeometry(go->geometry().translated(0, 1));
+                go->setGeometry(go->geometry().translated(0, speed));
             }
         }
         else if(randomValue < percentageRandomDirection * 4)
         {
             if(go->geometry().top() > 0)
             {
-                go->setGeometry(go->geometry().translated(0, -1));
+                go->setGeometry(go->geometry().translated(0, -speed));
             }
         }
         else
@@ -271,11 +274,11 @@ void MainWindow::onUpdateGameObjects()
             if(xToCenter > pushFromCenterSize || xToCenter < -pushFromCenterSize ||
                yToCenter > pushFromCenterSize || yToCenter < -pushFromCenterSize)
             {
-                go->setGeometry(go->geometry().translated(xToCenter > 0 ? 1 : -1, yToCenter > 0 ? 1 : -1));
+                go->setGeometry(go->geometry().translated(xToCenter > 0 ? speed : -speed, yToCenter > 0 ? speed : -speed));
             }
             else
             {
-                go->setGeometry(go->geometry().translated(xToCenter > 0 ? -1 : 1, yToCenter > 0 ? -1 : 1));
+                go->setGeometry(go->geometry().translated(xToCenter > 0 ? -speed : speed, yToCenter > 0 ? -speed : speed));
             }
 
         }
