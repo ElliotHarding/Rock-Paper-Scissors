@@ -194,11 +194,11 @@ void MainWindow::updateCollisionTableWidgets()
             const QPair<GameObjectType, GameObjectType> typePair(types[type1], types[type2]);
             if(m_collisionResults.find(typePair) == m_collisionResults.end())
             {
-                m_collisionResults[typePair] = types[type1];
+                m_collisionResults.insert(typePair, types[type1] == types[type2] ? types[type1] : types[0]);
             }
 
             CollisionCombobox* resultsCombo = new CollisionCombobox(typePair);
-            for(GameObjectType got : types)
+            for(GameObjectType& got : types)
             {
                 resultsCombo->addItem(got);
             }
@@ -298,7 +298,7 @@ void MainWindow::onUpdateGameObjects()
 
         if(ui->cb_loopGame->isChecked())
         {
-            QThread::msleep(ui->sb_secondsBetweenLoops->value() * 1000);
+            //QThread::msleep(ui->sb_secondsBetweenLoops->value() * 1000);
             reset();
             m_pUpdateGameObjectsTimer->start(ui->sb_updateFrequency->value());
         }
