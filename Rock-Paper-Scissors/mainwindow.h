@@ -47,7 +47,7 @@ private slots:
 
 private:
     ///Reset and default params
-    void reset();
+    void resetGameObjects();
     void setDefaultSettings();
 
     ///Collision table

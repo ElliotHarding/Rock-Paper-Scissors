@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->wdg_collisionTable->setLayout(layout);
 
     setDefaultSettings();
-    reset();
+    resetGameObjects();
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
@@ -110,7 +110,7 @@ void MainWindow::setDefaultSettings()
     updateCollisionTableWidgets();
 }
 
-void MainWindow::reset()
+void MainWindow::resetGameObjects()
 {
     int count = 0;
     const int rows = ui->listWidget_gameObjectSettings->count();
@@ -343,7 +343,7 @@ void MainWindow::onUpdateGameObjects()
 
         if(ui->cb_loopGame->isChecked())
         {
-            reset();
+            resetGameObjects();
             m_gameState = InProgress;
             m_pUpdateGameObjectsTimer->start(ui->sb_updateFrequency->value());
         }
@@ -356,7 +356,7 @@ void MainWindow::on_btn_start_clicked()
     {
         if(m_gameState == Finished)
         {
-            reset();
+            resetGameObjects();
         }
         m_gameState = InProgress;
         m_pUpdateGameObjectsTimer->start(ui->sb_updateFrequency->value());
@@ -371,7 +371,7 @@ void MainWindow::on_btn_stop_clicked()
 
 void MainWindow::on_btn_reset_clicked()
 {
-    reset();
+    resetGameObjects();
 }
 
 void MainWindow::on_btn_addGameObjectSettings_clicked()
