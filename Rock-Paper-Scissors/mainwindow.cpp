@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_pUpdateGameObjectsTimer = new QTimer(this);
     connect(m_pUpdateGameObjectsTimer, SIGNAL(timeout()), this, SLOT(onUpdateGameObjects()));
+    m_gameState = InProgress;
     m_pUpdateGameObjectsTimer->start(ui->sb_updateFrequency->value());
 }
 
@@ -336,11 +337,14 @@ void MainWindow::onUpdateGameObjects()
     {
         //todo update winner
 
+        m_gameState = Finished;
+
         m_pUpdateGameObjectsTimer->stop();
 
         if(ui->cb_loopGame->isChecked())
         {
             reset();
+            m_gameState = InProgress;
             m_pUpdateGameObjectsTimer->start(ui->sb_updateFrequency->value());
         }
     }
@@ -348,11 +352,20 @@ void MainWindow::onUpdateGameObjects()
 
 void MainWindow::on_btn_start_clicked()
 {
-    m_pUpdateGameObjectsTimer->start(ui->sb_updateFrequency->value());
+    if(m_gameState != InProgress)
+    {
+        if(m_gameState == Finished)
+        {
+            reset();
+        }
+        m_gameState = InProgress;
+        m_pUpdateGameObjectsTimer->start(ui->sb_updateFrequency->value());
+    }
 }
 
 void MainWindow::on_btn_stop_clicked()
 {
+    m_gameState = Paused;
     m_pUpdateGameObjectsTimer->stop();
 }
 

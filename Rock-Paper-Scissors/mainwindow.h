@@ -58,6 +58,14 @@ private:
     Ui::MainWindow *ui;
     DLG_GameFeild* m_pDlgGameFeild = nullptr;
 
+    enum GameState
+    {
+        InProgress,
+        Finished,
+        Paused
+    };
+    GameState m_gameState = Finished;
+
     QTimer* m_pUpdateGameObjectsTimer;
 
     QList<GameObject*> m_gameObjects;
