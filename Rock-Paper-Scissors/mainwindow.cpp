@@ -232,6 +232,7 @@ void MainWindow::onUpdateGameObjects()
 {
     if(m_gameObjects.count() == 0)
     {
+        m_gameState = Finished;
         m_pUpdateGameObjectsTimer->stop();
         return;
     }
