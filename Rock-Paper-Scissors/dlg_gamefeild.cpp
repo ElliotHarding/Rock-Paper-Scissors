@@ -7,6 +7,7 @@ DLG_GameFeild::DLG_GameFeild(QWidget *parent) :
     m_pParent(parent)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 }
 
 DLG_GameFeild::~DLG_GameFeild()

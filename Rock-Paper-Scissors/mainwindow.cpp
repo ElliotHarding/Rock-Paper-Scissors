@@ -29,12 +29,13 @@ const QMap<QPair<GameObjectType, GameObjectType>, GameObjectType> CollisionResul
 
 const bool LoopGame = false;//Auto restart game
 const int MoveUpdateFrequency = 10;//How often gameobjects positions are updated (ms)
-const int MoveRandomDirectionPercentageChance = 95;//Percentage chance a game object moves in a random direction versus heading towards center
+const int MoveRandomDirectionPercentageChance = 90;//Percentage chance a game object moves in a random direction versus heading towards center
 const int CenterPushRange = 10;//Once within x blocks of center, tend to move game object away from center
 const int GameObjectSpeed = 2;
 const int GameWidth = 400;
 const int GameHeight = 400;
 const bool GameObjectsSpawnRandomLocation = false;
+const bool HunterMode = true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->listWidget_gameObjectSettings->setDragDropMode(QAbstractItemView::DragDropMode::NoDragDrop);
+
+    setGeometry(50, 50, geometry().width(), geometry().height());
 
     m_pDlgGameFeild = new DLG_GameFeild(this);
     m_pDlgGameFeild->show();
@@ -104,6 +107,7 @@ void MainWindow::setDefaultSettings()
     ui->sb_centerPushRange->setValue(StartSettings::CenterPushRange);
     ui->sb_gameObjectSpeed->setValue(StartSettings::GameObjectSpeed);
     ui->cb_spawnRandomLocation->setChecked(StartSettings::GameObjectsSpawnRandomLocation);
+    ui->cb_hunterAlgorithm->setChecked(StartSettings::HunterMode);
     ui->sb_gameSizeX->setValue(StartSettings::GameWidth);
     ui->sb_gameSizeY->setValue(StartSettings::GameHeight);
     m_pDlgGameFeild->resize(StartSettings::GameWidth, StartSettings::GameHeight);
