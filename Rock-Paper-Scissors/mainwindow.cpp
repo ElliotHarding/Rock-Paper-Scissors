@@ -34,6 +34,7 @@ const int CenterPushRange = 10;//Once within x blocks of center, tend to move ga
 const int GameObjectSpeed = 2;
 const int GameWidth = 400;
 const int GameHeight = 400;
+const bool GameObjectsSpawnRandomLocation = false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,6 +103,7 @@ void MainWindow::setDefaultSettings()
     ui->sb_moveRandomPercentage->setValue(StartSettings::MoveRandomDirectionPercentageChance);
     ui->sb_centerPushRange->setValue(StartSettings::CenterPushRange);
     ui->sb_gameObjectSpeed->setValue(StartSettings::GameObjectSpeed);
+    ui->cb_spawnRandomLocation->setChecked(StartSettings::GameObjectsSpawnRandomLocation);
     ui->sb_gameSizeX->setValue(StartSettings::GameWidth);
     ui->sb_gameSizeY->setValue(StartSettings::GameHeight);
     m_pDlgGameFeild->resize(StartSettings::GameWidth, StartSettings::GameHeight);
@@ -123,13 +125,24 @@ void MainWindow::resetGameObjects()
 
         for(int i = 0; i < spawnSettings.count; i++)
         {
-            if(count < m_gameObjects.count())
+            QPoint spawnPos;
+            if(ui->cb_spawnRandomLocation->isChecked())
             {
-                m_gameObjects[count]->reset(spawnSettings.type, spawnSettings.position);
+                spawnPos = QPoint(QRandomGenerator::global()->generateDouble() * m_pDlgGameFeild->geometry().width(),
+                                  QRandomGenerator::global()->generateDouble() * m_pDlgGameFeild->geometry().height());
             }
             else
             {
-                m_gameObjects.push_back(new GameObject(m_pDlgGameFeild, spawnSettings.type, spawnSettings.position));
+                spawnPos = spawnSettings.position;
+            }
+
+            if(count < m_gameObjects.count())
+            {
+                m_gameObjects[count]->reset(spawnSettings.type, spawnPos);
+            }
+            else
+            {
+                m_gameObjects.push_back(new GameObject(m_pDlgGameFeild, spawnSettings.type, spawnPos));
             }
             count++;
         }
