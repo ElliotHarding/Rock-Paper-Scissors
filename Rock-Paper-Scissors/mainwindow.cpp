@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "collisioncombobox.h"
 
+#include <cmath>
 #include <QDebug>
 #include <QPainter>
 #include <QRandomGenerator>
@@ -220,7 +221,13 @@ void MainWindow::updateCollisionTableWidgets()
         }
     }
 }
-#include <cmath>        // std::abs
+
+typedef QPoint Vector2;
+Vector2 limitMagnitude(const Vector2& vector, const int& magnitude)
+{
+    return Vector2(vector.x() > 0 ? magnitude : -magnitude, vector.y() > 0 ? magnitude : -magnitude);
+}
+
 void MainWindow::onUpdateGameObjects()
 {
     if(m_gameObjects.count() == 0)
@@ -269,7 +276,7 @@ void MainWindow::onUpdateGameObjects()
             if(ui->cb_hunterAlgorithm->isChecked())
             {
                 bool foundTarget = false;
-                QPoint vectorToTarget(9999, 9999);
+                Vector2 vectorToTarget(9999, 9999);
                 for(GameObject* otherGo : m_gameObjects)
                 {
                     //Check if a target
@@ -291,27 +298,34 @@ void MainWindow::onUpdateGameObjects()
                     }
                 }
 
+                //Move towards target if one found, otherwise move to center
                 if(foundTarget)
                 {
-                    go->setGeometry(go->geometry().translated(vectorToTarget.x() > 0 ? speed : -speed, vectorToTarget.y() > 0 ? speed : -speed));
+                    go->setGeometry(go->geometry().translated(limitMagnitude(vectorToTarget, speed)));
+                }
+                else
+                {
+                    Vector2 toCenter(m_pDlgGameFeild->geometry().width()/2 - go->geometry().x(),
+                                     m_pDlgGameFeild->geometry().height()/2 - go->geometry().y());
+                    go->setGeometry(go->geometry().translated(limitMagnitude(toCenter, speed)));
                 }
             }
             else
             {
-                const int xToCenter = ui->sb_gameSizeX->value()/2 - go->geometry().x();
-                const int yToCenter = ui->sb_gameSizeY->value()/2- go->geometry().y();
+                Vector2 toCenter(m_pDlgGameFeild->geometry().width()/2 - go->geometry().x(),
+                                 m_pDlgGameFeild->geometry().height()/2 - go->geometry().y());
 
                 const int pushFromCenterSize = ui->sb_centerPushRange->value();
 
                 //Move towards center, unless close to it, in which case move away from center
-                if(xToCenter > pushFromCenterSize || xToCenter < -pushFromCenterSize ||
-                   yToCenter > pushFromCenterSize || yToCenter < -pushFromCenterSize)
+                if(toCenter.x() > pushFromCenterSize || toCenter.x() < -pushFromCenterSize ||
+                   toCenter.y() > pushFromCenterSize || toCenter.y() < -pushFromCenterSize)
                 {
-                    go->setGeometry(go->geometry().translated(xToCenter > 0 ? speed : -speed, yToCenter > 0 ? speed : -speed));
+                    go->setGeometry(go->geometry().translated(limitMagnitude(toCenter, speed)));
                 }
                 else
                 {
-                    go->setGeometry(go->geometry().translated(xToCenter > 0 ? -speed : speed, yToCenter > 0 ? -speed : speed));
+                    go->setGeometry(go->geometry().translated(limitMagnitude(toCenter, -speed)));
                 }
             }
         }
