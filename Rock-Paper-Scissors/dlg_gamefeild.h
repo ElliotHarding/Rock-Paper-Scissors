@@ -15,8 +15,13 @@ public:
     explicit DLG_GameFeild(QWidget *parent = nullptr);
     ~DLG_GameFeild();
 
+protected:
+    void closeEvent(QCloseEvent *) override;
+
 private:
     Ui::DLG_GameFeild *ui;
+
+    QWidget* m_pParent;
 };
 
 #endif // DLG_GAMEFEILD_H
