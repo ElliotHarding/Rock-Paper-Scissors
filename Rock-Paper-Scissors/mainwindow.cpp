@@ -186,10 +186,10 @@ void MainWindow::updateCollisionTableWidgets()
             types.push_back(type);
 
             QLabel* newRowTypeLabel = new QLabel(type);
-            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(newRowTypeLabel, layoutRow++, 0);
+            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(newRowTypeLabel, layoutRow++, 0, Qt::AlignTop);
 
             QLabel* newColTypeLbl = new QLabel(type);
-            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(newColTypeLbl, 0, layoutCol++);
+            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(newColTypeLbl, 0, layoutCol++, Qt::AlignTop);
         }
     }
 
@@ -217,7 +217,7 @@ void MainWindow::updateCollisionTableWidgets()
 
             connect(resultsCombo, SIGNAL(onChanged(QPair<GameObjectType, GameObjectType>, GameObjectType)), this, SLOT(onCollisionResultChanged(QPair<GameObjectType, GameObjectType>, GameObjectType)));
 
-            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(resultsCombo, type1+1, type2+1);
+            dynamic_cast<QGridLayout*>(ui->wdg_collisionTable->layout())->addWidget(resultsCombo, type1+1, type2+1, Qt::AlignTop);
         }
     }
 }
