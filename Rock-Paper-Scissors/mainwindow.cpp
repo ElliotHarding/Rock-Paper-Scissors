@@ -245,7 +245,7 @@ void MainWindow::onUpdateGameObjects()
         int randomValue = QRandomGenerator::global()->generateDouble() * 100;
         if(randomValue < percentageRandomDirection)
         {
-            if(go->geometry().right() < geometry().right())
+            if(go->geometry().right() < m_pDlgGameFeild->geometry().right())
             {
                 go->setGeometry(go->geometry().translated(speed, 0));
             }
@@ -259,7 +259,7 @@ void MainWindow::onUpdateGameObjects()
         }
         else if(randomValue < percentageRandomDirection * 3)
         {
-            if(go->geometry().bottom() < geometry().bottom())
+            if(go->geometry().bottom() < m_pDlgGameFeild->geometry().bottom())
             {
                 go->setGeometry(go->geometry().translated(0, speed));
             }
